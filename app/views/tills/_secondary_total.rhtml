@@ -1,0 +1,14 @@
+<table width="100%" height="100%">
+	<tr height="100%">
+		<td align="center" style="color:white;font-size:48pt;">
+			TOTAL: <%=@total_price.as_price%>
+			<br><br>
+			<% if @card_surcharge %>
+				<div style="font-size:16pt;">Please note that a surcharge of <%=Preference.get("card_surcharge").to_f.as_price%> has been added<br>as your card purchase is less than <%=Preference.get("card_surcharge_limit").to_f.as_price%>.</div>
+			<% end %>
+			<% if @cheque_surcharge %>
+				<div style="font-size:16pt;">Please note that a surcharge of <%=Preference.get("cheque_surcharge").to_f.as_price%> has been added<br>as your cheque purchase is less than <%=Preference.get("cheque_surcharge_limit").to_f.as_price%>.</div>
+			<% end %>
+		</td>
+	</tr>
+</table>

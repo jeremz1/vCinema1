@@ -1,0 +1,24 @@
+<form action="<%=url_for(:action => "update", :id => @product.id, :only_path => false)%>" method ="post">
+
+<table>
+	<tr>
+		<td align="right">Product Name:</td><td><%=text_field("product","name")%></td>
+	</tr>
+	<tr>
+		<td align="right">Price: &pound;</td><td><%=text_field("product","price")%></td>
+	</tr>
+	<tr>
+		<td align="right">Barcode:</td><td><%=text_field("product","barcode")%></td>
+	</tr>
+	<tr>
+		<td align="right">Available</td><td><%=check_box("product","available")%></td>
+	</tr>
+	<tr>
+		<td align="right">Display on Second Screen:</td><td><%=check_box("product","display_in_second_screen_list")%></td>
+	</tr>
+	<tr>
+		<td></td><td><%= submit_tag()%></td>
+	</tr>
+</table>
+
+</form>

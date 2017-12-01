@@ -1,0 +1,280 @@
+body {
+	font-size: 14pt;
+
+}
+
+#content_pane {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:1024px;
+	height:768px;
+	background-color: #333355;
+	
+}
+
+#secondary_content {
+	position:absolute;
+	left:1024px;
+	top:0px;
+	width:1024px;
+	height:768px;
+	background-color: #333355;
+	color: white;	
+}
+
+#secondary_dynamic {
+	position:absolute;
+	left:10px;
+	top:84px;
+	width: 680px;
+	height: 400px;
+	/*background-color: #BBBBFF;*/
+}
+#secondary_ads {
+	position:absolute;
+	left:10px;
+	top:494px;
+	width: 680px;
+	height: 264px;
+
+	/*background-color: #BBFFBB;*/
+}
+
+#secondary_cart {
+	position: absolute;
+	top: 84px;
+	left: 700px;
+	width: 324px;
+	height: 684px;
+	border-left:  solid 1pt #aaaaaa;
+	border-top:  solid 1pt #aaaaaa;
+	/*background-color: #BBBBFF;*/
+}
+
+
+#header {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 1024px;
+	height: 84px;
+	/*border-bottom:  solid 1pt #aaaaaa; */
+	/*background-color: #FFBBBB;*/
+}
+
+#left_pane {
+	position: absolute;
+	top: 84px;
+	left: 0px;
+	width: 180px;
+	height: 684px;
+	/*background-color: #BBFFBB;*/
+}
+
+#mid_pane {
+	position: absolute;
+	top: 84px;
+	left: 190px;
+	width: 560px;
+	height: 684px;
+	/*background-color: #BBFFFF;*/
+}
+
+#large_mid_pane {
+	position: absolute;
+	top: 84px;
+	left: 160px;
+	width: 864px;
+	height: 684px;
+	/*background-color: #BBFFFF;*/
+}
+
+#right_pane {
+	position: absolute;
+	top: 84px;
+	left: 760px;
+	width: 264px;
+	height: 684px;
+	border-left:  solid 1pt #aaaaaa;
+	border-top:  solid 1pt #aaaaaa;
+	/*background-color: #BBBBFF;*/
+}
+
+#nav_pane {
+	position: absolute;
+	top: 683px;
+	left: 760px;
+	width: 264px;
+	height: 70px;
+	text-align: center;
+	/*background-color: #FFBBBB;*/
+}
+
+#clear_sale_button {
+	position: absolute;
+	top: 0px;
+	left: 805px;
+}
+
+
+#cart td {
+	color: #ffffff;
+	font-size: 14pt;
+}
+
+#cart .headingCell {
+	border-bottom: solid 1px #aaaaaa;
+}
+
+#cart .priceCell {
+	border-left: solid 1px #aaaaaa;
+	text-align: center;
+	white-space:nowrap;
+	padding-left:8px;
+}
+
+#cart .totalPrice {
+	position: absolute;
+	top: 549px;
+	left: 0px;
+	width: 100%;
+	font-size: 24pt;
+	color: #ffffff;
+	border-top: solid 1px #aaaaaa;
+	border-bottom: solid 1px #aaaaaa;
+}
+
+.delete_button {
+	width: 58px;
+	height: 58px;
+	background-image: url(../../images/buttons/delete.jpg);
+	cursor: pointer;
+}
+
+.plus_button {
+	width: 58px;
+	height: 58px;
+	background-image: url(../../images/buttons/plus.jpg);
+	cursor: pointer;
+}
+
+.nav_button {
+	display: inline;
+	background-color:  #333355;
+}
+
+.medium_button {
+	background-color: #333355;
+
+	height: 84px;
+	width: 180px;
+	cursor: pointer;
+	background-image: url(../../images/buttons/medium_button.jpg);
+	color: #ffffff;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.medium_button table {
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.medium_button td {
+	color: #ffffff;
+	text-align: center;
+	font-size: 14pt;
+	cursor: pointer;
+}
+
+.large_button {
+	height: 84px;
+	width: 550px;
+	cursor: pointer;
+	background-image: url(../../images/buttons/large_button.jpg);
+	text-align: center;
+	vertical-align: middle;
+}
+
+.large_button table {
+	width: 100%;
+	height: 100%;
+}
+
+.large_button td {
+	color: #ffffff;
+	text-align: center;
+	font-size: 14pt;
+}
+
+.grid_button {
+	width: 108px;
+	height: 108px;
+	cursor: pointer;
+	text-align: center;
+	vertical-align: middle;
+	background-image: url(../../images/buttons/grid_button.jpg);
+
+}
+
+.grid_button_next_page {
+	width: 108px;
+	height: 108px;
+	cursor: pointer;
+	text-align: center;
+	vertical-align: middle;
+	background-image: url(../../images/buttons/grid_button_next_page.jpg);
+
+}
+
+.grid_button_previous_page {
+	width: 108px;
+	height: 108px;
+	cursor: pointer;
+	text-align: center;
+	vertical-align: middle;
+	background-image: url(../../images/buttons/grid_button_previous_page.jpg);
+
+}
+
+.grid_button table {
+	width: 100%;
+	height: 100%;
+}
+
+.grid_button td {
+	color: #ffffff;
+	text-align: center;
+	font-size: 14pt;
+}
+
+.small_button {
+	width: 80px;
+	height: 80px;
+	cursor: pointer;
+	text-align: center;
+	vertical-align: middle;
+	background-image: url(../../images/buttons/small_button.jpg);
+}
+
+.small_button table {
+	width: 100%;
+	height: 100%;
+}
+
+.small_button td {
+	color: #ffffff;
+	text-align: center;
+	font-size: 14pt;
+}
+
+#new_customer_page td {
+	font-size: 14pt;
+	color:#ffffff;
+}
+
+#new_customer_page input {
+	font-size: 14pt;
+}

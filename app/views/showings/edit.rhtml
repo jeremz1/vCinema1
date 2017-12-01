@@ -1,0 +1,17 @@
+<form action="<%=url_for(:action => "update", :id => @showing.id, :only_path => false)%>" method="post">
+
+Ticket types allocated to showing of "<%=@showing.film.title%>" 
+on <%=@showing.show_time.strftime("%a %d %b")%> 
+at <%=@showing.show_time.strftime("%H %M")%>:
+
+<%=select("ticket_types", "id", TicketType.find(:all).collect {|tt| [tt.name, tt.id]}, {:selected => @ticket_types}, :multiple => true)%>	
+<br>
+<br>
+
+<br>	
+
+<br>
+
+
+<%=submit_tag()%>
+</form>

@@ -1,0 +1,30 @@
+<form action="<%=url_for(:action => "update", :id => @product.id, :only_path => false)%>" method ="post">
+
+<table>
+	<tr>
+		<td align="right">Product Name:</td><td><%=text_field("product","name")%></td>
+	</tr>
+	<tr>
+		<td align="right">Price: &pound;</td><td><%=text_field("product","price")%></td>
+	</tr>
+	<tr>
+		<td align="right">Barcode:</td><td><%=text_field("product","barcode")%></td>
+	</tr>
+	<tr>
+		<td align="right">Available</td><td><%=check_box("product","available")%></td>
+	</tr>
+	<tr>
+		<td align="right">Display on Second Screen:</td><td><%=check_box("product","display_in_second_screen_list")%></td>
+	</tr>
+	<tr>
+		<td></td><td><%= submit_tag()%></td>
+	</tr>
+</table>
+
+</form>
+Showings <%= select("date", "range", [["Past", 1], ["This Week", 2], ["Next Week", 3], ["All Future", 4], ["All", 5]], {:selected => params[:id].to_i} , { :onchange => "document.location.href='" + url_for(:controller => "showings", :action => 'list_by_date', :id => nil, :only_path => false) + "/' + date_range.value" })%>:
+<br><br>
+
+<%= render :partial => "list"%>
+
+<a href="<%= url_for(:controller => "showings", :action => 'new', :id => nil, :only_path => false) %>">Add new showings</a>

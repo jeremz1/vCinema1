@@ -1,0 +1,41 @@
+<div id="new_customer_page">
+	
+
+<div align="center" style="color:#ffffff;">
+	<h2>Enter any known customer details</h2>			
+</div>
+
+<form name="customerForm<%=@uid%>" action="confirm_new_customer" method="post">
+
+<div align="center">
+	<table>
+		<tr>
+			<td align="right">
+				Name:
+			</td>
+			<td>
+
+				<input id="customer_name" name="customer[name]" type="text" onfocus="textFocus=true;" onkeyup="new Ajax.Request('customer_search', {asynchronous:true, evalScripts:true, parameters:'customer_name=' + $F(document.getElementById('customer_name')) + '&customer_telephone=' + $F(document.getElementById('customer_telephone'))});">
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				Tel:
+			</td>
+			<td>
+
+				<input id="customer_telephone" name="customer[telephone]" type="text" onkeyup="new Ajax.Request('customer_search', {asynchronous:true, evalScripts:true, parameters:'customer_name=' + $F(document.getElementById('customer_name')) + '&customer_telephone=' + $F(document.getElementById('customer_telephone'))});">
+			</td>
+		</tr>
+	</table>
+</div>
+
+
+</form>
+
+<div id="search_results" style="color:#ffffff;font-size:14pt;text-align:center;">
+	
+	
+</div>
+
+</div>

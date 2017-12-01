@@ -1,0 +1,33 @@
+<div align="center" style="color: #ffffff;position:absolute;left:0px;top:10px;width:1024px;height:768px;">
+<div style="padding-top:0px;padding-bottom:10px;">Logged in as <%=session[:user].full_name%></div>
+	<%
+
+		@buttons = [{:id => 0, :submit_url => "choose_mode", :caption => "Use till", :on_loaded => "document.location.href='home'"}]
+		
+		@buttons << {:id => 1, :submit_url => "choose_mode", :caption => "Make Refund", :on_loaded => "document.location.href='refund'"}
+
+		@buttons << {:id => 2, :submit_url => "choose_mode", :caption => "Record Ticket Collection", :on_loaded => "document.location.href='ticket_collection'"}
+	
+		@buttons << {:id => 3, :submit_url => "choose_mode", :caption => "Print Seat Reservation Labels", :on_loaded => "document.location.href='choose_labels_showing'"}
+
+		cs = CashUp.find(:all, :conditions => {:till_ip => params[:remote_addr], :time => Time.now.beginning_of_day..Time.now})
+		if cs.size > 0 then
+			caption = "Cash Up (Already done today)"
+		else
+			caption = "Cash Up (Not done today)"
+		end
+		@buttons << {:id => 4, :submit_url => "choose_mode", :caption => caption, :on_loaded => "document.location.href='cash_up'"}
+
+		if session[:user].is_clocked_in then
+			@buttons << {:id => 5, :submit_url => "choose_mode", :caption => "Clock Out", :submit_url => "clock_out", :on_loaded => "document.location.href='choose_mode'"}
+		else
+			@buttons << {:id => 6, :submit_url => "choose_mode", :caption => "Clock In", :submit_url => "clock_in", :on_loaded => "document.location.href='choose_mode'"}
+		end
+
+		@buttons << {:id => 7, :submit_url => "choose_mode", :caption => "Switch User", :on_loaded => "document.location.href='logout'"}
+
+	%>
+	<%= render(:partial => "shared/large_button_list")%>
+
+
+</div>

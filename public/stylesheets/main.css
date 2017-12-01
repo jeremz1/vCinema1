@@ -1,0 +1,40 @@
+#params {
+     color: #999999;
+     
+}
+
+#sidebar {
+	/*visibility: hidden;*/
+	position: absolute;
+	left: 650px;
+	top: 70px;
+	width: 200px;
+	height: 500px;
+	background-color: #EEEEEE;
+	
+}
+
+body {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	overflow: hidden;
+}
+
+.divLink {
+	cursor: pointer;
+}
+
+#adminNav {
+	position: absolute;
+	left: 0px;
+	top: 100px;
+	width: 200px;
+
+}
+
+#adminContent {
+	position: absolute;
+	left: 200px;
+	top: 100px;
+
+
+}

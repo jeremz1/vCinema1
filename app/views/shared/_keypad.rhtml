@@ -1,0 +1,52 @@
+<div>
+	<%
+		onclick = "s = " + @text_field + ".value.replace('.','') + 'VAL';"
+		if @price_input then
+			#remove leading zeros
+			onclick += "while (s.charAt(0) == '0') { s = s.substr(1); }"
+			#make sure at least 3 chars long.
+			onclick += "while (s.length < 3) { s = '0' + s; }"
+			#add dec point
+			onclick += "s = s.substr(0, s.length - 2) + '.' + s.substr(s.length - 2);"
+		end 
+		onclick +=  @text_field + ".value = s;"
+		onclick += "if (" + @text_field + ".value.length == " + @length_event[:length].to_s + ") {" + @length_event[:function] + "}"
+		@numbers = [{:n => 1, :x => 0, :y => 2, :onclick => onclick.gsub('VAL','1')}]
+		@numbers << {:n => 2, :x => 1, :y => 2, :onclick => onclick.gsub('VAL','2')}
+		@numbers << {:n => 3, :x => 2, :y => 2, :onclick => onclick.gsub('VAL','3')}
+		@numbers << {:n => 4, :x => 0, :y => 1, :onclick => onclick.gsub('VAL','4')}
+		@numbers << {:n => 5, :x => 1, :y => 1, :onclick => onclick.gsub('VAL','5')}
+		@numbers << {:n => 6, :x => 2, :y => 1, :onclick => onclick.gsub('VAL','6')}
+		@numbers << {:n => 7, :x => 0, :y => 0, :onclick => onclick.gsub('VAL','7')}
+		@numbers << {:n => 8, :x => 1, :y => 0, :onclick => onclick.gsub('VAL','8')}
+		@numbers << {:n => 9, :x => 2, :y => 0, :onclick => onclick.gsub('VAL','9')}
+		@numbers << {:n => 0, :x => 1, :y => 3, :onclick => onclick.gsub('VAL','0')}
+		@numbers << {:n => "C", :x => 0, :y => 3, :onclick => @text_field + ".value = '';"}
+		@numbers << {:n => "00", :x => 2, :y => 3, :onclick => onclick.gsub('VAL','00')}
+		@numbers << {:n => "&pound;40", :x => 5, :y => 0, :onclick => onclick.gsub('VAL','4000')}
+		@numbers << {:n => "&pound;35", :x => 4, :y => 0, :onclick => onclick.gsub('VAL','3500')}
+		@numbers << {:n => "&pound;30", :x => 5, :y => 1, :onclick => onclick.gsub('VAL','3000')}
+		@numbers << {:n => "&pound;25", :x => 4, :y => 1, :onclick => onclick.gsub('VAL','2500')}
+		@numbers << {:n => "&pound;20", :x => 5, :y => 2, :onclick => onclick.gsub('VAL','2000')}
+		@numbers << {:n => "&pound;15", :x => 4, :y => 2, :onclick => onclick.gsub('VAL','1500')}
+		@numbers << {:n => "&pound;10", :x => 5, :y => 3, :onclick => onclick.gsub('VAL','1000')}
+		@numbers << {:n => "&pound;5", :x => 4, :y => 3, :onclick => onclick.gsub('VAL','500')}
+	%>
+	<% i = 0 %>
+	<% for n in @numbers %>	
+	<% 
+       i+=1 
+	   @event = "this.style.backgroundPosition='-80px 0px';setTimeout('resetBackgroundPosition(\\'num" + i.to_s + "\\');',100);"
+	%>
+		<div id="num<%=i%>" class="small_button" style="position:absolute;left:<%=n[:x] * 85%>px;top:<%=n[:y] * 85%>px;" onmousedown="<%=@event%><%=n[:onclick]%>" ondblclick="<%=@event%><%=n[:onclick]%>" onselectstart="return false;">
+			<table>
+				<tr>
+					<td>
+						<%=n[:n]%>
+					</td>
+				</tr>
+			</table>
+		</div>	
+	<% end %>
+	
+</div>

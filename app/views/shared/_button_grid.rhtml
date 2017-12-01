@@ -1,0 +1,98 @@
+<% @buttons_heading = "" if @buttons_heading == nil%>
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center" style="color:#ffffff;">
+			<h2><%=@buttons_heading%></h2>
+		</td>
+	</tr>
+</table>
+<% 
+@buttons_top_offset = 0 if @buttons_top_offset == nil
+@max_buttons = 30 if @max_buttons == nil
+page = 0
+if @buttons != nil
+
+	@event = "this.style.backgroundPosition='-108px 0px';setTimeout('resetBackgroundPosition(\\'%%EL%%\\');',100);"
+
+	page = 0
+
+	%>
+	
+	<div id="grid_button_page_<%=page%>" style="position:absolute;left:6px;top:<%=((@buttons_heading == "" ? 15 : 45) + @buttons_top_offset).to_s%>px;width:554px;height:660px;">
+	
+
+	
+	
+	<%
+
+
+	i = 0 
+	for b in @buttons 
+	   
+		row = i / 5
+		col = (i - row * 5)
+
+		if (i == @max_buttons-1 and @buttons.size > @max_buttons)
+		%>
+		
+		
+		    <div id="grid_button_next_page_<%=page%>" class="grid_button_next_page"
+		         style="position: absolute;
+		                left: <%=(col * 110)%>px;
+		                top: <%=(row * 110)%>px;
+						
+		               " onmousedown="document.getElementById('grid_button_page_<%=page%>').style.display = 'none';document.getElementById('grid_button_page_<%=page + 1%>').style.display = 'block';"
+					     ondblclick="document.getElementById('grid_button_page_<%=page%>').style.display = 'none';document.getElementById('grid_button_page_<%=page + 1%>').style.display = 'block';"
+					   	 onselectstart="return false;"
+					   >
+		    </div>
+			
+		</div>
+		<% 
+			page += 1
+		%>
+		
+		<div id="grid_button_page_<%=page%>" style="display:none;position:absolute;left:6px;top:15px;width:554px;height:660px;">
+			<div id="grid_button_previous_page_<%=page%>" class="grid_button_previous_page"
+		         style="position: absolute;
+		                left: 0px;
+		                top: 0px;
+		               " onmousedown="document.getElementById('grid_button_page_<%=page%>').style.display = 'none';document.getElementById('grid_button_page_<%=page - 1%>').style.display = 'block';"
+					     ondblclick="document.getElementById('grid_button_page_<%=page%>').style.display = 'none';document.getElementById('grid_button_page_<%=page - 1%>').style.display = 'block';"
+					   	 onselectstart="return false;"
+					   >
+		    </div>
+		
+		<% 
+			i = 1
+			row = i / 5
+			col = (i - row * 5)
+		end
+		%>
+		
+		
+	    <div id="grid_button<%=b[:id].to_s%>" class="grid_button"
+	         style="position: absolute;
+	                left: <%=(col * 110)%>px;
+	                top: <%=(row * 110)%>px;
+					overflow: hidden;
+	               " onmousedown="<%=@event.gsub('%%EL%%','grid_button' + b[:id].to_s)%><%= remote_function(:url => {:action => b[:submit_url], :id => b[:id]}) %>"
+				     ondblclick="<%=@event.gsub('%%EL%%','grid_button' + b[:id].to_s)%><%= remote_function(:url => {:action => b[:submit_url], :id => b[:id]}) %>"
+				   	 onselectstart="return false;"
+				   >
+	    	<table><tr><td style="padding-right:5px;font-size:11pt;">
+	    		<%=b[:caption]%>
+	    	</td></tr></table>
+	    </div>
+		
+		<% 
+
+	i = i + 1
+	end 
+
+
+	%>
+		</div>
+	<%
+end
+%>

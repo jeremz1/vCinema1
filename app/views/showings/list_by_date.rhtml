@@ -1,0 +1,9 @@
+Showings <%= select("date", "range", [["Past", 1], ["This Week", 2], ["Next Week", 3], ["All Future", 4], ["All", 5]], {:selected => params[:id].to_i} , { :onchange => "document.location.href='" + url_for(:controller => "showings", :action => 'list_by_date', :id => nil, :only_path => false) + "/' + date_range.value" })%>:
+<br>
+<br> Oh What's the point ?? Nobody ever looks at me I may as well just sit here and rust! 
+<br>
+<br>
+
+<%= render :partial => "list"%>
+
+<a href="<%= url_for(:controller => "showings", :action => 'new', :id => nil, :only_path => false) %>">Add new showings</a>

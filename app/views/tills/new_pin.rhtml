@@ -1,0 +1,25 @@
+<div align="center">
+<br><Br>
+<div align="center" style="color:#ffffff;"><h2><%=session[:user].full_name%></h2></div>
+<br><br>
+<% if session[:new_pin] == nil %>
+	<i style="color:#ffffff;">Enter New Pin</i>
+<% else %>
+	<i style="color:#ffffff;">Confirm New Pin</i>
+<% end %>
+<form name="formPin" method="post" action="new_pin">
+
+<input style="font-size:24pt;text-align:center;" id="user_pin" name="user[pin]" type="password" maxlength="4" size="4" onkeyup="if (formPin.user_pin.value.length == 4) {formPin.submit();}" onfocus="textFocus=true;">
+
+
+</form>
+<div style="position:absolute;left:387px;top:300px;">
+<%
+	@text_field = "formPin.user_pin"
+	@length_event = {:length => 4, :function => "formPin.submit();"}
+	@price_input = false
+%>
+<%=render :partial => "shared/keypad"%>	
+</div>
+
+</div>

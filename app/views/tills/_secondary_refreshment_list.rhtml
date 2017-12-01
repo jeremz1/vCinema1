@@ -1,0 +1,21 @@
+<div align="center">The following refreshments are available:</div>
+
+<%
+  rs = Refreshment.find_all_by_refreshment_type_id(RefreshmentType.find_by_name(refreshment_type).id)
+  rs.sort! {|a,b| a.name <=> b.name }
+%>
+<br>
+<table width="100%" style="color:white;font-size:10pt;">
+	<tr>
+	<% i = 0 %>
+	<% for r in rs.collect {|r| (r.display_in_second_screen_list ? r : nil)}.compact %>
+		<td>
+			<%=r.name%>
+		</td>
+		<% if i % 3 == 2 %>
+			</tr><tr>
+		<% end %>
+		<% i += 1%>
+	<% end %>		
+	</tr>
+</table>

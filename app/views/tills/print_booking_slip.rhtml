@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Receipt</title>
+	</head>
+	<script>
+		function printit()
+		{ 
+			 var WebBrowser = '<OBJECT ID="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>'; 
+			 document.body.insertAdjacentHTML('beforeEnd', WebBrowser); 
+			 WebBrowser1.ExecWB(6, 2); 
+			 WebBrowser1.outerHTML = "";
+		}
+	</script>
+	<body onload="printit();window.close();" style="background-color:#ffffff;">
+		<div style="border:1px solid #000000;text-align:center;position:absolute;top:0;left:0;width:300;font-family:verdana;">
+			<div style="font-size:16pt;">Booking Details</div><br>
+
+						
+			<div style="border-top:1pt solid black; border-bottom:1pt solid black;">
+				<table style="font-size:12pt;" width="100%" >
+					<tr>
+						<% if not @sale.customer.nil? then %>
+							<td align="center" width="50%">
+								<%=@sale.customer.name%>
+							</td>
+							<td align="center" width="50%">
+								<%=@sale.customer.telephone%>
+							</td>
+						<% else %>
+						    Customer name not recorded
+						<% end %>
+					</tr>
+				</table>
+			</div>
+			
+				<% if @sale.tickets != nil and @sale.tickets.size > 0 %>
+					<br>
+					<%=@sale.tickets[0].showing.film.title%><br>
+					<%=@sale.tickets[0].showing.show_time.format("%a %d %b, %H:%M")%>
+					
+				<% end %>
+			<br><br>
+			<div style="font-size:16pt;">Ticket #<%=format("%05i", @sale.id)%></div>
+			<br><br>
+		</div>
+	</body>
+</html>

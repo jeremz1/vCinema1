@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Refund</title>
+	</head>
+	<script>
+		function printit()
+		{ 
+			 var WebBrowser = '<OBJECT ID="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>'; 
+			 document.body.insertAdjacentHTML('beforeEnd', WebBrowser); 
+			 WebBrowser1.ExecWB(6, 2); 
+			 WebBrowser1.outerHTML = "";
+		}
+	</script>
+	<body onload="printit();window.close();" style="background-color:#ffffff;">
+		<div style="border:1px solid #000000;text-align:center;position:absolute;top:0;left:0;width:300;font-family:verdana;">
+			<div style="font-size:16pt;">Refund Details</div><br>
+
+						
+			<div style="border-top:1pt solid black; border-bottom:1pt solid black;">
+				<table style="font-size:12pt;" width="100%" >
+					<tr>
+						<td align="center" width="50%">
+							Original Sale:<br><%=@sale.sale_time.strftime("%d/%m/%y %H:%M")%>
+						</td>
+						<td align="center" width="50%">
+							Ticket:<br>
+							#<%=format("%05i", @sale.id)%>
+						</td>
+					</tr>
+
+				</table>
+			</div>
+			<br><br>
+			<div style="font-size:16pt;"><%=@sale.payment_method.name%> Payment</div>
+			<br>
+			<div style="font-size:16pt;">Refunded: <%=@sale.total_price.as_price%></div>
+			<br><br>
+		</div>
+	</body>
+</html>

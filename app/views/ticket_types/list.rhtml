@@ -1,0 +1,62 @@
+
+<table border="1">
+	<tr>
+		<td>
+			<b>Till Ticket Name:</b>
+		</td>
+		<td>
+			<b>Price:</b>
+		</td>
+		<td>
+			<b>Available?</b>
+		</td>
+		<td>
+			<b>EDIT</b>
+		</td>
+		
+			<td>
+			<b>Online Ticket Name:</b>
+		</td>
+	</tr>
+	
+
+<% for tt in TicketType.find(:all) %>
+	<tr>
+		<td>
+			<%=tt.name%>
+		</td>
+		<td>
+			<%=tt.price.as_price%>
+		</td>
+		<td>
+			<%= (tt.available ? "Yes" : "No") %>
+		</td>
+		<td>
+			<%=link_to("[Edit]", :action => "edit", :id => tt.id )%>
+		</td>
+		<% if tt.tickets.size == 0 and tt.product_offers.size == 0 %>
+			<td>
+				<%=link_to("[Delete]", :action => "delete", :id => tt.id )%>
+			</td>
+		<% end %>
+			
+			<td>
+			<%=tt.web_name%>
+		</td>
+	 <% if tt.product_offers.size > 0 %>
+			<td>
+				<%=link_to("[Offers]", :controller => "offers", :action => "list", :id => tt.id )%>	
+		</td>
+		<% end %>		
+	</tr>
+	  
+	
+		
+	
+	
+
+
+<% end %>
+</table>
+<br>
+<%=link_to("Create new ticket type...", :action => "new")%>

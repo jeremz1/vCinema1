@@ -1,0 +1,22 @@
+<form action="<%=url_for(:action => "update", :id => @consumable.id, :only_path => false)%>" method ="post">
+
+<table>
+	<tr>
+		<td align="right">Consumable Name:</td><td><%=text_field("consumable","name")%></td>
+	</tr>
+	<tr>
+		<td align="right">Current Stock Level:</td><td><%=text_field("consumable","stock_level")%></td>
+	</tr>
+	<tr>
+		<td align="right">Desired Stock Level:</td><td><%=text_field("consumable","desired_level")%></td>
+	</tr>
+	<tr>
+		<td align="right">Stock Reorder Level:</td><td><%=text_field("consumable","reorder_level")%></td>
+	</tr>
+	<tr>
+		<td></td><td><%= submit_tag()%></td>
+	</tr>
+</table>
+
+
+</form>

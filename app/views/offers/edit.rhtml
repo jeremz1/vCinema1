@@ -1,0 +1,92 @@
+
+<form action="<%=url_for(:action => "update", :id => @offer.id, :only_path => false)%>" method="post">
+	
+
+
+<table>
+	<tr>
+		<td align="right">Offer Name:</td><td><%=text_field("offer","name")%></td>
+	</tr>
+	<tr>
+		<td align="right">Refund Amount: &pound;</td><td><%=text_field("offer","refund_amount")%></td>
+	</tr>
+	<tr>
+		<td align="right">Automatic</td><td><%=check_box("offer","automatic")%></td>
+	</tr>
+	<tr>
+		<td align="right">Available</td><td><%=check_box("offer","available")%></td>
+	</tr>
+	<tr>
+		<td></td><td><%=submit_tag()%></td>
+	</tr>
+</table>
+
+</form>
+
+<%
+
+	@required_tickets = Array.new
+	@required_refreshments = Array.new
+	for po in ProductOffer.find(:all, :conditions => {:offer_id => @offer.id}) 
+		if (po.product.class.to_s == "TicketType") then
+			@required_tickets << po
+		else
+			@required_refreshments << po
+		end
+	end
+%>
+
+Required tickets:
+
+<% if @required_tickets.size > 0 %>
+<table border="1">
+	<tr>
+		<td>Ticket Type</td>
+		<td>Quantity</td>
+	</tr>
+	<% for po in @required_tickets %>
+				<tr>
+					<td><%=po.product.name%></td>
+					<td><%=po.quantity_required%></td>
+					<td><%=link_to("[Remove]", :action => "remove_product_offer", :id => po.id)%></td>
+				</tr>
+	<% end %>
+</table>
+<% else %>
+<br><br>--None--
+<% end %>
+<br><br>
+<form action="<%=url_for(:action => "add_product", :id => @offer.id, :only_path => false)%>" method="post">
+Add ticket type: 
+<%=select("product", "id", TicketType.find(:all).collect {|tt| [tt.name, tt.id]})%>
+Quantity: <%=text_field("product", "quantity", {:size => 2, :maxLength => 2, :value => 1})%>
+<%=submit_tag("Add")%>
+</form>
+<br><br>
+Required refreshments:
+<% if @required_refreshments.size > 0 %>
+<table border="1">
+	<tr>
+		<td>Refreshment</td>
+		<td>Quantity</td>
+	</tr>
+	<% for po in @required_refreshments %>
+				<tr>
+					<td><%=po.product.name%></td>
+					<td><%=po.quantity_required%></td>
+					<td><%=link_to("[Remove]", :action => "remove_product_offer", :id => po.id)%></td>
+				</tr>
+	<% end %>	
+</table>
+<% else %>
+<br><br>--None--
+<% end %>
+<form action="<%=url_for(:action => "add_product", :id => @offer.id, :only_path => false)%>" method="post">
+Add refreshment: 
+<%=select("product", "id", Refreshment.find(:all).collect {|r| [r.name, r.id]})%>
+Quantity: <%=text_field("product", "quantity", {:size => 2, :maxLength => 2, :value => 1})%>
+<%=submit_tag("Add")%>
+</form>
+
+<br><br>
+<%=link_to("<< Back to list of offers.", :action => "list")%>

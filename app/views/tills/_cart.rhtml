@@ -1,0 +1,220 @@
+<div id="cart" align="center" style="color:#ffffff; padding-top: 5px;">
+
+	
+<b>Selected Items</b><br>
+
+<input id="barcodeField" type="hidden">
+<%=observe_field("barcodeField", {:frequency => 0.5, :with => "input", :url => {:controller => "tills", :action => "barcode_input", :only_path => false}})%>
+
+
+<div style=" height:500px;overflow:auto;">
+
+<%
+
+@tickets = session[:user_data][:selected_products][:tickets]
+@refreshments = session[:user_data][:selected_products][:refreshments]
+@other_products = session[:user_data][:selected_products][:other]
+@offers = session[:user_data][:selected_products][:offers]
+
+@tickets.sort! {|a,b| if (a[0] <=> b[0]) != 0 then a[0] <=> b[0] else a[1] <=> b[1] end }
+@offers.sort!
+@refreshments.sort!
+
+@showings = (@tickets.collect {|t| t[0]}).uniq
+
+i = 0
+total_price = 0
+@event = "this.style.backgroundPosition='-58px 0px';setTimeout('resetBackgroundPosition(\\'%%EL%%\\');',100);"
+%>
+<% if @showings.size > 0 %>
+		
+		<% for showing in @showings %>
+			<% @showing = Showing.find(showing) %>
+			<br>
+			<table width="100%" cellspacing="0">
+			<tr>
+				<td colspan="3" class="headingCell">
+					<I>"<%=@showing.film.title%>"</I><br>
+				</td>
+			</tr>
+		
+			
+			<% 
+	
+			@ticket_types = (@tickets.collect {|t| if t[0] == showing then t[1] else nil end}).compact
+			first = true
+			last_type = -1
+
+			for ticket in @ticket_types
+
+				@ticket_type = TicketType.find(ticket)
+			%>
+				<tr><td></td>
+					<td <%if (not first) and last_type != ticket then %>style="border-top: solid 1px #aaaaaa;"<% end %> width="100%">
+						<div id="cartItem<%=i%>" class="divLink" onclick="closeCartEdits();document.getElementById('cartItem<%=i%>').style.display = 'none';document.getElementById('cartItem<%=i%>Edit').style.display = 'block';">
+						   <%= @ticket_type.name %>
+						</div>
+					    <div id="cartItem<%=i%>Edit" style="display:none; text-align:center;">
+						   <div onclick="closeCartEdits();"><b><%= @ticket_type.name %><br></b></div>
+						   <table width="100%">
+						   	<tr>
+						   		<td align="center">
+								   <div id="cart_edit_delete_ticket_<%=ticket%><%=showing%>" class="delete_button" style="display:inline;" onclick="<%=@event.gsub('%%EL%%','cart_edit_delete_ticket_' + ticket.to_s + showing.to_s)%><%= remote_function(:url => { :action => :delete_cart_item, :type => "Ticket", :ticket_type_id => ticket, :showing_id => showing }) %>"></div>
+						   		</td>
+								<td align="center">
+								   <div id="cart_edit_duplicate_ticket_<%=ticket%><%=showing%>" class="plus_button" style="display:inline;" onclick="<%=@event.gsub('%%EL%%','cart_edit_duplicate_ticket_' + ticket.to_s + showing.to_s)%><%= remote_function(:url => { :action => :duplicate_cart_item, :type => "Ticket", :ticket_type_id => ticket, :showing_id => showing }) %>"></div>					
+								</td>
+						   	</tr>
+						   </table>
+						</div>
+					</td>
+					<td class="priceCell"><%=@ticket_type.price.as_price%></td>
+				</tr>
+		
+			<% 
+			total_price += @ticket_type.price
+			first = false
+			last_type = ticket
+			i = i + 1
+			end %>
+			</table>		
+		<% end %>
+	</table>
+<% end %>
+
+	<% if @refreshments.size > 0 %>
+		<br>
+		<table width="100%" cellspacing="0">
+
+			<tr>
+				<td colspan="3" class="headingCell">
+					<I>Refreshments</I><br>
+				</td>
+			</tr>
+			
+			
+			
+			<% for refreshment in @refreshments %>
+				<% @refreshment = Refreshment.find(refreshment)%>
+				<tr><td></td>
+					<td width="180px">		
+						<div id="cartItem<%=i%>" class="divLink" onclick="closeCartEdits();document.getElementById('cartItem<%=i%>').style.display = 'none';el = document.getElementById('cartItem<%=i%>Edit'); el.style.display = 'block';">
+						   <%= @refreshment.name %>
+						</div>
+					    <div id="cartItem<%=i%>Edit" style="display:none; text-align:center;">
+						   <div onclick="closeCartEdits();"><b><%= Refreshment.find(refreshment).name %></b></div>
+						   <table width="100%">
+						   	<tr>
+						   		<td align="center">
+								   <div id="cart_edit_delete_refreshment_<%=refreshment%>" class="delete_button" style="display:inline;" onclick="<%=@event.gsub('%%EL%%','cart_edit_delete_refreshment_' + refreshment.to_s)%><%= remote_function(:url => { :action => :delete_cart_item, :type => "Refreshment", :refreshment_id => refreshment }) %>"></div>
+						   		</td>
+								<td align="center">
+								   <div id="cart_edit_duplicate_refreshment_<%=refreshment%>" class="plus_button" style="display:inline;" onclick="<%=@event.gsub('%%EL%%','cart_edit_duplicate_refreshment_' + refreshment.to_s)%><%= remote_function(:url => { :action => :duplicate_cart_item, :type => "Refreshment", :refreshment_id => refreshment }) %>"></div>					
+								</td>
+						   	</tr>
+						   </table>
+						</div>
+					</td>
+					<td class="priceCell"><%=@refreshment.price.as_price%></td>
+				</tr>		
+			<% 
+			total_price += @refreshment.price
+			i = i + 1
+			end %>
+		</table>
+	<% end %>
+	
+	<% if @other_products.size > 0 %>
+		<br>
+		<table width="100%" cellspacing="0">
+
+			<tr>
+				<td colspan="3" class="headingCell">
+					<I>Other Products</I><br>
+				</td>
+			</tr>
+			
+			
+			
+			<% for product in @other_products %>
+				<% @product = Product.find(product)%>
+				<tr><td></td>
+					<td width="180px">		
+						<div id="cartItem<%=i%>" class="divLink" onclick="closeCartEdits();document.getElementById('cartItem<%=i%>').style.display = 'none';el = document.getElementById('cartItem<%=i%>Edit'); el.style.display = 'block';">
+						   <%= @product.name %>
+						</div>
+					    <div id="cartItem<%=i%>Edit" style="display:none; text-align:center;">
+						   <div onclick="closeCartEdits();"><b><%= @product.name %></b></div>
+						   <table width="100%">
+						   	<tr>
+						   		<td align="center">
+								   <div id="cart_edit_delete_other_product_<%=product%>" class="delete_button" style="display:inline;" onclick="<%=@event.gsub('%%EL%%','cart_edit_delete_other_product_' + product.to_s)%><%= remote_function(:url => { :action => :delete_cart_item, :type => "Other", :other_id => product }) %>"></div>
+						   		</td>
+								<td align="center">
+								   <div id="cart_edit_duplicate_other_product_<%=product%>" class="plus_button" style="display:inline;" onclick="<%=@event.gsub('%%EL%%','cart_edit_duplicate_other_product_' + product.to_s)%><%= remote_function(:url => { :action => :duplicate_cart_item, :type => "Other", :other_id => product }) %>"></div>					
+								</td>
+						   	</tr>
+						   </table>
+						</div>
+					</td>
+					<td class="priceCell"><%=@product.price.as_price%></td>
+				</tr>		
+			<% 
+			total_price += @product.price
+			i = i + 1
+			end %>
+		</table>
+	<% end %>
+
+	<% if @offers.size > 0 %>
+		<br>
+		<table width="100%" cellspacing="0">
+			<tr>
+				<td colspan="3" class="headingCell">
+					<I>Offers</I><br>
+				</td>
+			</tr>
+			
+			<% for offer in @offers %>
+				<% @offer = Offer.find(offer)%>
+				<tr><td></td>
+					<td width="180px">		
+						<div id="cartItem<%=i%>" class="divLink" <% if not @offer.automatic then %>onclick="closeCartEdits();document.getElementById('cartItem<%=i%>').style.display = 'none';document.getElementById('cartItem<%=i%>Edit').style.display = 'block';" <% end %>>
+						   <%= @offer.name %>
+						</div>
+					    <div id="cartItem<%=i%>Edit" style="display:none;">
+
+						   <div onclick="closeCartEdits();"><b><%= @offer.name %></b></div>
+						   <table width="100%">
+						   	<tr>
+						   		<td align="center">
+								   <div id="cart_edit_delete_offer_<%=offer%>" class="delete_button" style="display:inline;" onclick="<%=@event.gsub('%%EL%%','cart_edit_delete_offer_' + offer.to_s)%><%= remote_function(:url => { :action => :delete_cart_item, :type => "Offer", :offer_id => offer }) %>"></div>
+						   		</td>
+								<td align="center">
+								   <div id="cart_edit_duplicate_offer_<%=offer%>" class="plus_button" style="display:inline;" onclick="<%=@event.gsub('%%EL%%','cart_edit_duplicate_offer_' + offer.to_s)%><%= remote_function(:url => { :action => :duplicate_cart_item, :type => "Offer", :offer_id => offer }) %>"></div>					
+								</td>
+						   	</tr>
+						   </table>
+
+						</div>
+					</td>
+					<td class="priceCell"><%=(-@offer.refund_amount).as_price%></td>
+				</tr>		
+			
+			<%
+			total_price -= @offer.refund_amount
+			i = i + 1
+			end %>
+		</table>
+	<% end %>
+
+</table>
+
+</div>
+
+<div align="center" class="totalPrice">
+	Total: <%=total_price.as_price%>
+</div>
+
+
+</div>

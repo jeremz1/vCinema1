@@ -1,0 +1,52 @@
+All users:<br><br>
+
+<table border="1">
+	<tr>
+		<td>
+			Name
+		</td>
+		<td>
+			Username
+		</td>
+		<td>
+			Last Login
+		</td>
+		<td>
+			Admin?
+		</td>
+		<td>
+			Current?
+		</td>
+	</tr>
+	
+	<% for u in @users %>
+		<tr>
+			<td>
+				<%=link_to u.full_name, :action => :edit, :id => u.id%>
+			</td>
+			<td>
+				<%=u.username%>
+			</td>
+			<td>
+				<% if u.last_login.nil?%>
+					Never
+				<% else %>
+					<%=u.last_login.strftime("%d/%m/%y %H:%M")%>
+				<% end %>
+			</td>
+			<td>
+				<%=((not u.hashed_admin_password.nil?) ? "Yes" : "No" )%>
+			</td>
+			<td>
+				<%=(u.current ? "Yes" : "No") %>
+			</td>
+			<td>
+				<%=link_to "[View Timesheet]", :action => "timesheet", :id => u.id %>
+			</td>
+		</tr>
+	<% end %>
+
+</table>
+<br><br>
+<%=link_to("Add new user...", :action => "new")%>
+

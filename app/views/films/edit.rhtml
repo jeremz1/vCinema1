@@ -1,0 +1,54 @@
+
+<form action="../update/<%=@film.id%>" method="post">
+
+<table>
+
+<tr> 
+<td>Film No:  </td><td> <%= text_field("film", "id", "size" => 10, "maxLength" => 10)%> </td></tr> 
+<tr>
+<td>3D Film: </td><td><%= text_field("film", "3d_film", "size" => 1)%> </td> 
+</tr>
+<tr>
+<td>Film Title: </td><td><%= text_field("film", "title", "size" => 50 )%> </td> </tr>
+
+
+
+<tr>
+<td>Running Time:</td><td><%= text_field("film", "length", "size" => 3, "maxLength" => 3)%> minutes.  Certificate: <%= select("film", "certificate_id", Certificate.find(:all).collect {|c| [c.name, c.id]})%> Genre: <%= text_field("film", "genre", "size" => 30 )%> </td></tr>
+
+<tr>
+<td> Stage: </td><td><%= text_field("film", "theatre", "size" => 1)%> Put a 1 in this box for a Stage Show or 0 for a film. </td> </tr>
+
+<tr>
+<td>Plot1:</td><td><%= text_field("film", "plot1", "size" => 200 )%> </td>
+</tr>
+
+<tr>
+<td>Plot2:</td><td><%= text_field("film", "plot2", "size" => 190 )%> </td>
+</tr>
+<tr>
+<td>Director:</td><td><%= text_field("film", "director", "size" => 30 )%> </td>
+</tr>
+
+<tr>
+<td>Cast:</td><td><%= text_field("film", "cast", "size" => 80 )%> </td>
+
+
+
+</tr>
+<tr>
+<td>URL:</td><td><%= text_field("film", "weburl", "size" => 80 )%> </td>
+
+</tr>
+<tr>
+
+</tr>
+
+</table><br>
+
+<%= submit_tag("Save Changes")%>
+
+
+
+
+</form>

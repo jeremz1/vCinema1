@@ -1,0 +1,75 @@
+
+
+<% 
+@selection_string = session[:user_data][:showing_reservation_strings][session[:user_data][:showing_id]] if session[:user_data][:showing_reservation_strings] != nil
+@showing_id = session[:user_data][:showing_id]
+this_showing = Showing.find_by_id(@showing_id)
+%>
+
+
+<div align="center" style="text-align: center;">
+		
+
+<% 
+
+	#TODO: Allow to choose screen.
+	i = 0
+	for screen in this_showing.screens
+	i = i + 1
+%>
+
+	<div id="secondary_screen<%=screen.id%>" style="position: absolute; top: 120px; left: 0;<%=(i > 1 ? "display:none" : "")%>;">
+
+	<%
+	
+
+	@seats = Seat.find_all_by_screen_id(screen)
+	@max_selected = session[:user_data][:ticket_count]
+
+	max_x = 1
+	max_y = 1
+	@seats.each {|s| if s.x_pos > max_x then max_x = s.x_pos end}
+	@seats.each {|s| if s.y_pos > max_y then max_y = s.y_pos end}
+	#puts max_x
+
+	seat_size_x = 60
+	seat_size_y = 60
+	
+	origin_x = 512 - ((max_x+1) * 60)/2
+
+	for s in @seats
+	
+	sr = SeatReservation.find_by_seat_id_and_showing_id(s.id, this_showing.id)
+	
+	is_unavailable = (sr != nil)
+	is_chosen = @selection_string.split('|').include?(s.id.to_s) unless @selection_string == nil
+	%>
+	
+	
+	
+	<div id="secondary_seat<%=s.id%>" class="seat divLink <%=(is_unavailable ? "unavailableSeat" : (is_chosen ? "chosenSeat" : "availableSeat"))%>" style="left: <%=s.x_pos.to_f * seat_size_x + origin_x%>;top: <%=s.y_pos.to_i * seat_size_y%>;">
+			<table>
+				<tr>
+					<td>
+						<%=s.row%><%=s.column%>
+					</td>
+				</tr>
+			</table>
+
+	</div>
+	
+	
+	<% end %>
+	
+		<div style="position:absolute;left:<%=origin_x + (((max_x+1) * seat_size_x)/2) - 100%>px;top:<%=(max_y+1)*seat_size_y + 20%>px;width:200px;border-top:1px solid white;border-left:1px solid white;border-right:1px solid white;">
+			<%=screen.name%>
+		</div>
+	</div>
+
+<%
+
+	end
+%>
+
+
+</div>

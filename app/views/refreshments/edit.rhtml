@@ -1,0 +1,57 @@
+<form action="<%=url_for(:action => "update", :id => @refreshment.id, :only_path => false)%>" method ="post">
+
+<table>
+	<tr>
+		<td align="right">Refreshment Name:</td><td><%=text_field("refreshment","name")%></td>
+	</tr>
+	<tr>
+		<td align="right">Price: &pound;</td><td><%=text_field("refreshment","price")%></td>
+	</tr>
+	<tr>
+		<td align="right">Refreshment Type:</td><td><%=select("refreshment","refreshment_type_id", RefreshmentType.find(:all).collect {|rt| [rt.name, rt.id]})%></td>
+	</tr>
+	<tr>
+		<td align="right">Current Stock Level:</td><td><%=text_field("refreshment","stock_level")%></td><td align="right">Case Quantity:</td><td><%=text_field("refreshment","case_quantity")%></td>
+	</tr>
+	<tr>
+		<td align="right">Desired Stock Level:</td><td><%=text_field("refreshment","desired_level")%></td>
+	</tr>
+	<tr>
+		<td align="right">Stock Reorder Level:</td><td><%=text_field("refreshment","reorder_level")%></td>
+	</tr>
+	<tr>
+		<td align="right">Barcode:</td><td><%=text_field("refreshment","barcode")%></td>
+	</tr>
+	<tr>
+		<td align="right">Available:</td><td><%=check_box("refreshment","available")%></td>
+	</tr>
+	<tr>
+		<td align="right">Display on Second Screen:</td><td><%=check_box("refreshment","display_in_second_screen_list")%></td>
+	</tr>
+	<tr>
+		<td></td><td><%= submit_tag()%></td>
+	</tr>
+</table>
+
+
+</form>
+
+
+Consumables:<br>
+
+<table border=1>
+
+<% for c in @refreshment.consumables %>
+	<tr>
+		<td>
+			<%=c.name%>
+		</td>
+		<td>
+			<%=link_to("[Delete]",url_for(:action => "remove_consumable", :id => @refreshment.id, :consumable_id => c.id))%>
+		</td>
+	</tr>
+<% end %>
+	
+</table>
+
+Add link to consumable: <%=select("consumable","id", Consumable.find(:all).collect {|c| [c.name, c.id]}, {:include_blank => true, :selected => nil}, {:onchange => "document.location.href='../add_consumable/" + @refreshment.id.to_s + "?consumable_id=' + this.value;"})%>

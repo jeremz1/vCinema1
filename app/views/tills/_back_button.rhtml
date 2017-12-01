@@ -1,0 +1,7 @@
+<%
+	@event = "this.style.backgroundPosition='-180px 0px';setTimeout('resetBackgroundPosition(\\'back_button\\');',100);"
+%>
+
+<div id="back_button" style="position:absolute;left:0px;top:583px;" class="medium_button" onclick="<%=@event%><%= remote_function(:url => { :action => :back_button }) %>">
+	<table><tr><td>&lt;&lt; Back</td></tr></table>
+</div>

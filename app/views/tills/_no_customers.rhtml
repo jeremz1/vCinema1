@@ -1,0 +1,7 @@
+<i>No existing customers found.</i>
+<br><br>
+<%
+    @buttons = [{:id => 1, :caption => "New Customer...", :submit_url => "select_new_customer", :on_loaded => "setTimeout('setFocus(\\'customer_name\\');',10);"}]
+%>
+
+<%=render :partial => "shared/button_grid"%>

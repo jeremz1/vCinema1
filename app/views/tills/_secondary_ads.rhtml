@@ -1,0 +1,33 @@
+
+
+<!--
+home
+
+select_tickets
+select_drinks
+select_alcohol
+select_snacks
+select_sweets
+select_ices
+select_offers
+select_other_products
+
+choose_reserve_seats
+choose_immediate_or_booking
+choose_customer_type
+create_new_customer
+choose_existing_customer
+choose_payment_type
+take_payment
+collect_change
+
+till_not_in_use
+
+
+-->
+
+<% if FileTest.exists?("./public/images/adverts/#{page}.jpg") %>
+	<div style="position:absolute;top:0px;left:0px;width:680px;height:264px;background-image:url(<%=BASE_URL%>/images/adverts/<%=page%>.jpg#<%=@uid%>);"></div>
+<% else %>
+	<div style="position:absolute;top:0px;left:0px;width:680px;height:264px;background-image:url(<%=BASE_URL%>/images/adverts/default.jpg#<%=@uid%>);"></div>
+<% end %>

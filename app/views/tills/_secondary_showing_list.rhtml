@@ -1,0 +1,13 @@
+
+<div align="center">
+	
+	<%=@film.title%> is showing at the following times:
+	
+	<br><br>
+	
+	<% for s in @showings %>
+		<%=s.show_time.strftime("%a %d/%m/%y %H:%M")%><br>
+	<% end %>
+	
+	
+	</div>

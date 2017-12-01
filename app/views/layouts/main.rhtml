@@ -1,0 +1,79 @@
+<html>
+ <head>
+   <title>vCinema 1.0 :: Served from <%=request.env['HTTP_HOST']%></title>
+   <%= javascript_include_tag :defaults %>
+   <%= stylesheet_link_tag *@stylesheets %>
+ </head>
+<body onkeypress="catchBarcode(event);">
+<script type="text/javascript">
+    function closeCartEdits()
+    {
+        try
+        {
+            i = 0;
+            while(true)
+            {
+                document.getElementById('cartItem' + i + 'Edit').style.display = 'none';
+                document.getElementById('cartItem' + i).style.display = 'block';
+                i++;    
+            }
+        }
+        catch (err)
+        { }
+    }
+	function resetBackgroundPosition(elementId)
+	{
+		try
+		{
+			document.getElementById(elementId).style.backgroundPosition = "0 0";
+		}
+		catch (e) {}
+	}
+	
+
+	textFocus = false;
+	
+	function setFocus(elementId)
+	{	
+		textFocus = false;
+		trySetFocus(elementId);
+	}
+	
+	function trySetFocus(elementId)
+	{
+		element = document.getElementById(elementId);
+		element.blur();
+		element.focus();
+		if (!textFocus)
+		{
+			setTimeout("trySetFocus(\'" + elementId + "\');", 10);
+		}
+	}
+	
+	lastInput = 0;
+	
+	function catchBarcode(event)
+	{
+		el = document.getElementById('barcodeField');
+		if (el != null)
+		{
+			now = new Date().getTime()
+			if (lastInput < now - 1000)
+			{
+				el.value = '';
+			}
+			lastInput = now;
+			el.value += String.fromCharCode(event.keyCode)
+		}
+
+	}
+
+
+</script>
+
+
+	<div id="content_pane"><%= @content_for_layout%></div>
+	<div id="secondary_content"><%= render :partial => "secondary_content"%></div>
+
+ </body>
+</html>

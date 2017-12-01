@@ -1,0 +1,26 @@
+All images must be 680x264.
+
+There must be a default.jpg to use if any other specific advert is missing.
+
+The background colour of the page is #333355
+
+The following are valid names for adverts that will be used:
+
+home.jpg
+select_tickets.jpg
+select_drinks.jpg
+select_alcohol.jpg
+select_snacks.jpg
+select_sweets.jpg
+select_ices.jpg
+select_offers.jpg
+select_other_products.jpg
+choose_reserve_seats.jpg
+choose_immediate_or_booking.jpg
+choose_customer_type.jpg
+create_new_customer.jpg
+choose_existing_customer.jpg
+choose_payment_type.jpg
+take_payment.jpg
+collect_change.jpg
+till_not_in_use.jpg

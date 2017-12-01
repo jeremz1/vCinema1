@@ -1,0 +1,15 @@
+Showings of <%= select("film", "id", Film.find(:all).collect {|f| [f.title, f.id]}, {} , { :onchange => "document.location.href='" + url_for(:controller => "showings", :action => 'list_by_film', :id => nil, :only_path => false) + "/' + film_id.value" })%>:
+<br><br>
+
+
+<a href="#" onclick="document.location.href='<%= url_for(:controller => "showings", :action => 'new', :id => nil, :only_path => false) %>/' + film_id.value">Add new show(s)</a>
+<br><br>
+
+<% 
+@showings = @film.showings
+
+@showings.sort! {|a, b| a.show_time <=> b.show_time}
+
+%>
+<%= render :partial => "list"%>
+

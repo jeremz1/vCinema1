@@ -1,0 +1,83 @@
+<%= link_to "Add New Film", :action => "new" %>
+
+
+<br><br>
+<b>Sort by: </b> <%=link_to("Default", :show => params[:show])%> 
+                 <%=link_to("(desc)", :show => params[:show], :sort_direction => "desc")%> |
+				 <%=link_to("Title", :show => params[:show], :sort => "title")%> 
+                 <%=link_to("(desc)", :show => params[:show], :sort => "title", :sort_direction => "desc")%> |
+				 <%=link_to("Length", :show => params[:show], :sort => "length")%> 
+                 <%=link_to("(desc)", :show => params[:show], :sort => "length", :sort_direction => "desc")%> |
+				 <%=link_to("Certificate", :show => params[:show], :sort => "certificate")%> 
+                 <%=link_to("(desc)", :show => params[:show], :sort => "certificate", :sort_direction => "desc")%>
+<br><br>
+<%
+if params[:show] != "all"
+%>
+<b>Only showing first 20 films.</b> <%=link_to("Show all", :show => "all", :sort => params[:sort], :sort_direction => params[:sort_direction])%>
+<%
+else
+%>
+<b>Showing all films.</b> <%=link_to("Only show first 20.", :sort => params[:sort], :sort_direction => params[:sort_direction])%>
+<%
+end
+%>
+<br><br>
+
+<table border="1">
+	<tr>
+		<td>Film</td>
+		<td>Length (mins)</td>
+		<td>Certificate</td>
+	</tr>
+
+<%
+	films = Film.find(:all)
+	
+	if params[:sort] == "title"
+		films.sort! { |a,b| a.title <=> b.title }
+	elsif params[:sort] == "certificate"
+		films.sort! { |a,b| a.certificate.name <=> b.certificate.name }
+	elsif params[:sort] == "length"
+		films.sort! { |a,b| a.length <=> b.length }
+	else
+		films.sort! { |a,b| b.id <=> a.id }
+	end
+	
+	if params[:sort_direction] == "desc"
+		films.reverse!
+	end
+	
+	if params[:show] != "all"
+		films = films[0..20]
+	end
+%>
+
+<% for f in films %>
+
+	<tr>
+		<td>
+			<%=f["title"]%> - <%= link_to( f.title, :action => "show", :id => f.id)%>
+		</td>
+		<td>
+			<%= f.length.to_s %>
+		</td>
+		<td>
+			<%= f.certificate.name %>
+		</td>
+		<td>
+			<%= link_to "[Edit]", :action => "edit", :id => f.id %>
+		</td>
+		<td>
+			<%= link_to "[Delete]", :action => "delete", :id => f.id %>
+		</td>
+	</tr>
+
+
+<% end %>
+
+
+</table>
+
+<br><br>
+<%= link_to "Add New Film", :action => "new" %>

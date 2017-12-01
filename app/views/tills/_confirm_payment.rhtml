@@ -1,0 +1,64 @@
+<%   @is_booking = (session[:user_data][:customer_id] != nil or session[:user_data][:new_customer] == true) %>
+
+<%
+
+  @total_price = 0
+  for t in session[:user_data][:selected_products][:tickets].collect {|tid| TicketType.find(tid[1])}
+    @total_price += t.price
+  end
+  for r in session[:user_data][:selected_products][:refreshments].collect {|rid| Refreshment.find(rid)}
+    @total_price += r.price
+  end
+  for p in session[:user_data][:selected_products][:other].collect {|pid| Product.find(pid)}
+    @total_price += p.price
+  end
+  for o in session[:user_data][:selected_products][:offers].collect {|oid| Offer.find(oid)}
+    @total_price -= o.refund_amount
+  end
+	@card_surcharge = false
+	@cheque_surcharge = false
+  if PaymentMethod.find(session[:user_data][:sale][:payment_method]).name == "Card" and Preference.get("card_surcharge").to_f > 0 and @total_price < Preference.get("card_surcharge_limit").to_f
+	@card_surcharge = true    
+	@total_price += Preference.get("card_surcharge").to_f
+  end
+  if PaymentMethod.find(session[:user_data][:sale][:payment_method]).name == "Cheque" and Preference.get("cheque_surcharge").to_f > 0 and @total_price < Preference.get("cheque_surcharge_limit").to_f
+    @cheque_surcharge = true
+	@total_price += Preference.get("cheque_surcharge").to_f
+  end
+
+
+%>
+<div style="text-align:center;color:#ffffff;">
+
+	Take <%= PaymentMethod.find(session[:user_data][:sale][:payment_method]).name %> payment of:<br>
+	<div style="font-size:36pt;"><%=@total_price.as_price%></div>
+	<br>
+	
+	<form name="formCash" action="" method="post" onsubmit="return false;">
+		<i>Tendered</i><br>
+		<span style="font-size:24pt;">&pound;&nbsp;</span>
+<%
+		
+	@expected_tender = ""
+	if PaymentMethod.find(session[:user_data][:sale][:payment_method]).name != "Cash"
+		@expected_tender = @total_price.as_price.gsub('&pound;','')
+	end
+
+
+%>
+		<input style="font-size:24pt;text-align:left;" id="cash_tendered" type="text" size="6" onfocus="textFocus=true;" value="<%=@expected_tender%>">
+	</form>
+	
+	
+	<div style="position:absolute;left:150px;top:200px;">
+	<%
+		@text_field = "formCash.cash_tendered"
+		@length_event = {:length => -1, :function => ""}
+		@price_input = true
+	%>
+	<%=render :partial => "shared/keypad"%>	
+	</div>
+
+
+</div>
+

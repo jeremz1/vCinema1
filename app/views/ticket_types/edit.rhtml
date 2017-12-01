@@ -1,0 +1,29 @@
+<form action="<%=url_for(:controller => "ticket_types", :action => "update", :id => @ticket_type.id, :only_path => false)%>" method="post">
+
+	This is the place to alter or create new tickets.<br><br>
+	<table>
+		<tr>
+			<td align="right">Till Ticket Name:</td><td><%= text_field("ticket_type", "name")%></td><td>- the name shown the Till Button. </td>
+		</tr>
+		<tr>
+			<td align="right">Price: &pound;</td><td><%= text_field("ticket_type", "price", :size => 5, :maxLength => 5)%></td>
+		</tr>
+		<tr>
+			<td align="right">Available:</td><td><%= check_box "ticket_type", "available" %></td>
+		</tr>
+		<tr>
+			<td align="right">Online Ticket Name:</td><td><%= text_field("ticket_type", "web_name")%></td><td>- the name shown Online. </td>
+		</tr>
+		<tr>
+			<td><br></td>
+		</tr>
+		<tr>
+			<td>Press this button to save: </td><td><%=submit_tag()%></td>
+		</tr>
+	</table>
+	
+<br>	<H3>Notes:</H3>
+The name of the ticket is different on the Till to Online - either can be different or the same. <br><br>
+Any new ticket has to be added to the export list in order for it to be included in the Weekly Sales Spreadsheet DATA. 
+
+</form>

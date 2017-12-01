@@ -1,0 +1,80 @@
+Overview of the cinema.<br><br>
+
+Refreshments with low stock levels:<br><br>
+
+<% if @low_stock_refreshments.size > 0 %>
+	<table border="1">
+		<tr style="font-weight:bold;">
+			<td>
+				Product
+			</td>
+			<td>
+				Number Left
+			</td>
+			<td>
+				Number to Order
+			</td>
+      <td>
+				Case Quantity
+			</td>
+      <td>
+				add a case
+			</td>
+		</tr>
+	<% for r in @low_stock_refreshments %>
+		<tr>
+			<td>
+				<%=link_to(r.name, :controller => "refreshments", :action => "edit", :id => r.id)%>
+			</td>
+			<td>
+				<%=r.stock_level%>
+			</td>
+			<td>
+				<%=r.desired_level - r.stock_level%>
+			</td>
+      <td>
+				<%=r.case_quantity%>
+			</td>
+		</tr>
+	<% end %>
+	
+	</table>
+
+<% else %>
+	<b><i>None</i></b><br>
+<% end %>
+
+<br>
+Consumables with low stock levels:<br><br>
+
+<% if @low_stock_consumables.size > 0 %>
+	<table border="1">
+		<tr style="font-weight:bold;">
+			<td>
+				Consumable
+			</td>
+			<td>
+				Number Left
+			</td>
+			<td>
+				Number to Order
+			</td>
+		</tr>
+	<% for c in @low_stock_consumables %>
+		<tr>
+			<td>
+				<%=link_to(c.name, :controller => "consumables", :action => "edit", :id => c.id)%>
+			</td>
+			<td>
+				<%=c.stock_level%>
+			</td>
+			<td>
+				<%=c.desired_level - c.stock_level%>
+			</td>
+		</tr>
+	<% end %>
+	
+	</table>
+<% else %>
+	<b><i>None</i></b><br>
+<% end %>

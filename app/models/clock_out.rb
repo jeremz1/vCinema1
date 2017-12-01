@@ -1,0 +1,2 @@
+class ClockOut < StaffEvent
+end

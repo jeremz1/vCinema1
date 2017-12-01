@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Receipt</title>
+	</head>
+	<script>
+		function printit()
+		{ 
+			 var WebBrowser = '<OBJECT ID="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>'; 
+			 document.body.insertAdjacentHTML('beforeEnd', WebBrowser); 
+			 WebBrowser1.ExecWB(6, 2); 
+			 WebBrowser1.outerHTML = "";
+		}
+	</script>
+	<body onload="printit();window.close();" style="background-color:#ffffff;">
+		<div style="border:1px solid black;text-align:center;position:absolute;top:0;left:0;width:300px;font-family:verdana;">
+			<br>
+			<div style="font-size:16pt;">Cash-Up Summary</div><br>
+			<div style="font-size:12pt;"><%=@cash_up.time.strftime("%d/%m/%y - %H:%M")%></div><br>
+			<table style="font-size:12pt;">
+				<tr>
+					<td align="right">
+						Till:
+					</td>
+					<td>
+						<%=@cash_up.till_ip%>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">
+						User:
+					</td>
+					<td>
+						<%=@cash_up.user.full_name%>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<table style="font-size: 12pt;">
+				<tr>
+					<td align="right">
+						Cash in till:
+					</td>
+					<td>
+						<%=@cash_up.cash_amount.as_price%>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">
+						Card Sales:
+					</td>
+					<td>
+						<%=@cash_up.card_amount.as_price%>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">
+						Cheque Sales:
+					</td>
+					<td>
+						<%=@cash_up.cheque_amount.as_price%>
+					</td>
+				</tr>
+			</table>
+			<br>
+			
+
+		</div>
+	</body>
+</html>

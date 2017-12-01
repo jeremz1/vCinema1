@@ -1,0 +1,10 @@
+This is a sidebar
+
+<% 
+    tts = session[:user_data][:new_booking].temp_tickets
+for tt in tts %>
+
+<%= TicketType.find(tt.ticket_type_allocation.ticket_type_id).name %><br>
+
+<% end %>
+

@@ -1,0 +1,24 @@
+
+<table border="1">
+		<tr>
+			<td>
+				<b>Setting</b>
+			</td>
+			<td>
+				<b>Value</b>
+			</td>
+		</tr>
+	<% for p in @preferences %>
+		<tr>
+			<td>
+				<%=p.setting%>
+			</td>
+			<td>
+				<%=p.value%>
+			</td>
+			<td>
+				<%=link_to("[Edit]", url_for(:action => "edit", :id => p.id))%>
+			</td>
+		</tr>
+	<% end %>
+</table>

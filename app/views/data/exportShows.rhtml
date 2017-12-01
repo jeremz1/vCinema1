@@ -1,0 +1,202 @@
+Cashing up:
+<table border="1">
+	<tr>
+	
+	</tr>
+	<tr>
+		
+Ticket Prices
+<table border="1">
+	<tr>
+		<td>Ticket Type</td>
+		<td>Ticket Price</td>
+	</tr>
+	<% for tt in TicketType.find(:all) %>
+	
+		<tr>
+			<td><%=tt.name%></td>
+			<td><%=tt.price%></td>
+		</tr>
+	
+	<% end %>
+
+		
+	</tr>
+<%
+	day = Time.now.beginning_of_day.advance(:days => 3).beginning_of_week.advance(:days => -3)
+	for i in 0..6
+%>
+	
+<% 
+day = day.advance(:days => 1)
+end 
+
+%>
+</table>
+<br><br>
+
+<br><br>
+<%
+
+day = Time.now.beginning_of_day.advance(:days => 3).beginning_of_week.advance(:days => -3)
+showings = Showing.find(:all, :conditions => {:show_time => day..Time.now})
+film_ids = (showings.collect {|s| s.film.id}).uniq for theatre =1
+		
+day = Time.now.beginning_of_day.advance(:days => 3).beginning_of_week.advance(:days => -3)
+#orange_wednesday_count = 0
+7.times do
+
+%><br><br>
+<table>
+	<tr>
+		<td>Stage and Show ticket data - </td><td><%=day.strftime("%d/%m/%Y")%></td>
+		
+	</tr>	
+</table>
+	<table border="1">
+		<tr>
+			<td rowspan="2">Title</td>
+			<% 1.times do %>
+				<td colspan="19">Showing 1</td>
+
+				<!--<td colspan="4">Tea Matinee</td>-->
+			<% end %>
+		</tr>
+		<tr>
+			
+			<% 1.times do %>
+				<% 3.times do%>
+					
+					<td>Comp (Inc o/w)</td>
+					
+	                <td>LIVE FULL</td>
+                    <td>LIVE CONC</td>
+                    <td>ENCORE FULL</td>
+                    <td>ENCORE CONC</td>	
+					<td>New LIVE FULL</td>
+                    <td>New LIVE CONC</td>
+                    <td>New ENCORE FULL</td>
+                    <td>New ENCORE CONC</td>						
+					<td>NT FULL 2014-2015</td>
+					<td>NT CONC 2014-2015</td>
+				<% end %>
+					
+					
+				
+			<% end %>
+	
+		
+		<% j = 0 %>
+
+		<% for f in film_ids.collect {|fid| Film.find(fid)}%>
+	
+			<tr>
+				<td>
+					<%=f.title%>
+				</td>
+	
+				
+				<%
+	
+					showings = Showing.find(:all, :conditions => {:film_id => f.id, :show_time => day..(day.advance(:days => 1))})
+					showings.sort! {|a,b| a.show_time <=> b.show_time}
+					i = 0
+					showings.size.times do
+		
+						s = showings[i]
+						
+						comp_count = 0
+						
+						live_screening_full_count = 0
+						live_concession_count = 0
+						reprise_screening_full_count = 0
+						reprise_screening_count = 0
+						new_season_full_count = 0
+						new_season_full_conc_count = 0
+						new_season_encore_full_count = 0
+						new_season_encore_count = 0
+						
+						
+						
+						s.tickets.each {|t| comp_count += 1 if (t.ticket_type_id == 177 or t.ticket_type_id == 5)}
+					
+						
+						
+						s.tickets.each {|t| live_screening_full_count += 1 if t.ticket_type_id == 261}
+						s.tickets.each {|t| live_concession_count += 1 if t.ticket_type_id == 262}
+						
+						s.tickets.each {|t| reprise_screening_full_count += 1 if t.ticket_type_id == 263}
+						s.tickets.each {|t| reprise_screening_count += 1 if t.ticket_type_id == 264}
+						
+						s.tickets.each {|t| new_season_full_count += 1 if t.ticket_type_id == 269}
+						s.tickets.each {|t| new_season_full_conc_count += 1 if t.ticket_type_id == 270}
+						
+						s.tickets.each {|t| new_season_encore_full_count += 1 if t.ticket_type_id == 271}
+						s.tickets.each {|t| new_season_encore_count += 1 if t.ticket_type_id == 272}
+						%>
+
+						<td><%=comp_count%></td>
+						<td><%=live_screening_full_count%></td>
+						<td><%=live_concession_count%></td>
+						<td><%=reprise_screening_full_count%></td>
+						<td><%=reprise_screening_count%></td>
+						<td><%=new_season_full_count%></td>
+						<td><%=new_season_full_conc_count%></td>
+						<td><%=new_season_encore_full_count%></td>
+						<td><%=new_season_encore_count%></td>
+
+						
+					<% 
+						i += 1
+					end %>
+					
+					<% (5-i).times do %>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					<% end %>
+					
+	
+					
+			</tr>
+		<% end %>
+		<% (12 - j).times do %>
+			<tr>
+					<% 5.times do %>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					<% end %>
+
+			</tr>
+		<% end %>
+	</table>
+<%
+day = day.advance(:days => 1)
+end
+
+%>

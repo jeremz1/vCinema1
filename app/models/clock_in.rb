@@ -1,0 +1,2 @@
+class ClockIn < StaffEvent
+end

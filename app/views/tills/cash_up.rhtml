@@ -1,0 +1,22 @@
+<div align="center" style="font-size:24pt;color:#ffffff;">
+Last cash-up: <%=@last_cash_up_time.strftime("%d/%m/%y %H:%M")%><br>
+This cash-up: <%=Time.now.strftime("%d/%m/%y %H:%M")%><br><br>
+
+Till <%=@this_ip%>:<br><br>
+
+Cash in Till:
+<%=@cash_amount.as_price%> (<%=@cash_sales_since.size%> sales)<br><br>
+
+Card sales: <%=@card_amount.as_price%> (<%=@card_sales_since.size%> sales)<br><br>
+
+Cheque sales: <%=@cheque_amount.as_price%> (<%=@cheque_sales_since.size%> sales)<br><br>
+
+<%
+
+	@buttons = [{:id => 0, :caption => "Print", :on_loaded => "window.open('print_cash_up','myWindow','width=400,height=200,left=0,top=100,status=no');document.location.href='choose_mode';"}]
+
+%>
+	<%= render(:partial => "shared/large_button_list")%>
+
+
+</div>

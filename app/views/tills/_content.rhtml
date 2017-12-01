@@ -1,0 +1,77 @@
+    <div id="header"><%= render :partial => "header"%></div>
+	
+<% if session[:user_data][:sale_step] == 0 then %><%# Home page %> 
+
+    <div id="left_pane"><%= render :partial => "product_buttons"%></div>
+    <div id="mid_pane"><%= render :partial => "home"%></div>
+    <div id="right_pane"><%= render :partial => "cart"%></div>
+    <div id="nav_pane"><%= render :partial => "nav"%></div>   
+	
+<% elsif session[:user_data][:sale_step] == 1 then %><%# Choose whether to reserve seats %>
+
+	<%
+    @buttons = [{:id => 0, :caption => "Advance Booking", :submit_url => "select_seats"}]
+    @buttons << {:id => 1, :caption => "Immediate Sale", :submit_url => "unreserved_seats"}
+	%>
+	
+    <div id="mid_pane"><%= render :partial => "shared/large_button_list"%></div>
+    <div id="left_pane"><%= render :partial => "back_button"%></div>
+
+<% elsif session[:user_data][:sale_step] == 2 then %><%# Make seat reservations %>
+
+    <div id="large_mid_pane"><%= render :partial => "select_seats_for_showing"%></div>
+    <div id="left_pane"><%= render :partial => "showing_buttons"%></div>
+    <div id="nav_pane"><%= render :partial => "nav"%></div>   
+
+<% elsif session[:user_data][:sale_step] == 3 then %><%# Choose whether booking or immediate sale %>
+	
+	<% # NEVER USE THIS ANYMORE
+    @buttons = [{:id => 1, :caption => "OLD Advance booking", :submit_url => "select_booking"}]
+    @buttons << {:id => 0, :caption => "OLD Immediate sale", :submit_url => "select_immediate"}
+
+	%>
+    
+	<div id="mid_pane"><%= render :partial => "shared/large_button_list"%></div>
+    <div id="left_pane"><%= render :partial => "back_button"%></div>
+	
+<% elsif session[:user_data][:sale_step] == 4 then %><%# Select new or existing customer %>
+
+	<%
+    @buttons = [{:id => 1, :caption => "New Customer", :submit_url => "select_new_customer", :on_loaded => "setTimeout('setFocus(\\'customer_name\\');',10);"}]
+    @buttons << {:id => 0, :caption => "Existing Customer", :submit_url => "select_existing_customer", :on_loaded => "setTimeout('setFocus(\\'customer_name\\');',10);"}
+	%>
+	
+	<div id="left_pane"><%= render :partial => "back_button"%></div>
+	<div id="mid_pane"><%= render :partial => "shared/large_button_list"%></div>
+	
+<% elsif session[:user_data][:sale_step] == 5 then %><%# Create new customer %>
+
+	<div id="left_pane"><%= render :partial => "back_button"%></div>
+	<div id="mid_pane"><%= render :partial => "new_customer"%></div>
+    <div id="nav_pane"><%= render :partial => "nav"%></div>   
+	
+<% elsif session[:user_data][:sale_step] == 6 then %><%# Find existing customer %>
+
+	<div id="left_pane"><%= render :partial => "back_button"%></div>
+	<div id="mid_pane"><%= render :partial => "find_customer"%></div>
+	
+
+<% elsif session[:user_data][:sale_step] == 7 then %><%# Payment type %>
+
+
+    <div id="mid_pane"><%= render :partial => "choose_payment_method"%></div>
+    <div id="left_pane"><%= render :partial => "back_button"%></div>
+
+<% elsif session[:user_data][:sale_step] == 8 then %><%# Confirm payment + print%>
+
+    <div id="mid_pane"><%= render :partial => "confirm_payment"%></div>
+    <div id="left_pane"><%= render :partial => "back_button"%></div>
+    <div id="nav_pane"><%= render :partial => "nav"%></div>   
+	
+<% elsif session[:user_data][:sale_step] == 9 then %><%# Give change then reset%>
+
+    <div id="mid_pane"><%= render :partial => "give_change"%></div>
+    <div id="nav_pane"><%= render :partial => "nav"%></div>   
+
+
+<% end %>

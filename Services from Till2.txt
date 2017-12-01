@@ -1,0 +1,3 @@
+"C:/Ruby187/bin/mongrel_service.exe" service single -e production -p 4000 -a 0.0.0.0 -l "log/mongrel.log" -P "log/mongrel.pid" -c "C:/vCinema1" -t 0 -r "public" -n 1024
+
+"C:/Ruby187/bin/mongrel_service.exe" service single -e production -p 4001 -a 0.0.0.0 -l "log/mongrel.log" -P "log/mongrel.pid" -c "C:/vCinema1" -t 0 -r "public" -n 1024

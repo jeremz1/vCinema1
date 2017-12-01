@@ -1,0 +1,162 @@
+<div id="cart" align="center" style="color:#ffffff; padding-top: 5px;">
+
+<b>Selected Items</b><br>
+
+<div style=" height:650px;overflow:hidden;">
+
+<%
+
+@tickets = session[:user_data][:selected_products][:tickets]
+@refreshments = session[:user_data][:selected_products][:refreshments]
+@other_products = session[:user_data][:selected_products][:other]
+@offers = session[:user_data][:selected_products][:offers]
+
+@tickets.sort! {|a,b| if (a[0] <=> b[0]) != 0 then a[0] <=> b[0] else a[1] <=> b[1] end }
+@offers.sort!
+@refreshments.sort!
+
+@showings = (@tickets.collect {|t| t[0]}).uniq
+
+i = 0
+total_price = 0
+@event = "this.style.backgroundPosition='-58px 0px';setTimeout('resetBackgroundPosition(\\'%%EL%%\\');',100);"
+%>
+<% if @showings.size > 0 %>
+		
+		<% for showing in @showings %>
+			<% @showing = Showing.find(showing) %>
+			<br>
+			<table width="100%" cellspacing="0">
+			<tr>
+				<td colspan="3" class="headingCell">
+					<I>"<%=@showing.film.title%>"</I><br>
+				</td>
+			</tr>
+		
+			
+			<% 
+	
+			@ticket_types = (@tickets.collect {|t| if t[0] == showing then t[1] else nil end}).compact
+			first = true
+			last_type = -1
+
+			for ticket in @ticket_types
+
+				@ticket_type = TicketType.find(ticket)
+			%>
+				<tr><td>&nbsp;</td>
+					<td <%if (not first) and last_type != ticket then %>style="border-top: solid 1px #aaaaaa;"<% end %> width="100%">
+						<div class="divLink">
+						   <%= @ticket_type.name %>
+						</div>
+					</td>
+					<td class="priceCell"><%=@ticket_type.price.as_price%></td><!-- -->
+				</tr>
+		
+			<% 
+			total_price += @ticket_type.price
+			first = false
+			last_type = ticket
+			i = i + 1
+			end %>
+			</table>		
+		<% end %>
+	</table>
+<% end %>
+
+	<% if @refreshments.size > 0 %>
+		<br>
+		<table width="100%" cellspacing="0">
+
+			<tr>
+				<td colspan="3" class="headingCell">
+					<I>Refreshments</I><br>
+				</td>
+			</tr>
+			
+			
+			
+			<% for refreshment in @refreshments %>
+				<% @refreshment = Refreshment.find(refreshment)%>
+				<tr><td>&nbsp;</td>
+					<td width="100%">		
+						<div class="divLink">
+						   <%= @refreshment.name %>
+						</div>
+					</td>
+					<!--<td class="priceCell"><%=@refreshment.price.as_price%></td>-->
+				</tr>		
+			<% 
+			total_price += @refreshment.price
+			i = i + 1
+			end %>
+		</table>
+	<% end %>
+	
+	<% if @other_products.size > 0 %>
+		<br>
+		<table width="100%" cellspacing="0">
+
+			<tr>
+				<td colspan="3" class="headingCell">
+					<I>Other Products</I><br>
+				</td>
+			</tr>
+			
+			
+			
+			<% for product in @other_products %>
+				<% @product = Product.find(product)%>
+				<tr><td>&nbsp;</td>
+					<td width="100%">		
+						<div class="divLink">
+						   <%= @product.name %>
+						</div>
+					</td>
+					<!--<td class="priceCell"><%=@product.price.as_price%></td>-->
+				</tr>		
+			<% 
+			total_price += @product.price
+			i = i + 1
+			end %>
+		</table>
+	<% end %>
+
+	<% if @offers.size > 0 %>
+		<br>
+		<table width="100%" cellspacing="0">
+			<tr>
+				<td colspan="3" class="headingCell">
+					<I>Offers</I><br>
+				</td>
+			</tr>
+			
+			<% for offer in @offers %>
+				<% @offer = Offer.find(offer)%>
+				<tr><td>&nbsp;</td>
+					<td width="100%">		
+						<div class="divLink">
+						   <%= @offer.name %>
+						</div>
+					</td>
+					<!--<td class="priceCell"><%=(-@offer.refund_amount).as_price%></td>-->
+				</tr>		
+			
+			<%
+			total_price -= @offer.refund_amount
+			i = i + 1
+			end %>
+		</table>
+	<% end %>
+
+</table>
+
+</div>
+
+
+<div align="center" class="totalPrice">
+	Total: <%=total_price.as_price%>
+</div>
+<!---->
+
+</div>

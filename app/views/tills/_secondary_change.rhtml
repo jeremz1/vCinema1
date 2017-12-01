@@ -1,0 +1,10 @@
+<% sale = Sale.find(session[:user_data][:new_sale_id]) %>
+
+<table width="100%" height="100%">
+	<tr height="100%">
+		<td align="center" style="color:white;font-size:24pt;">
+			Please collect your change: <%=(sale.tendered - sale.total_price).as_price%><br><br><br>
+			Enjoy the film!
+		</td>
+	</tr>
+</table>

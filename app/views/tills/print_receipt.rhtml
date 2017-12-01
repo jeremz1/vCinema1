@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Receipt</title>
+	</head>
+	<script>
+		function printit()
+		{ 
+			 var WebBrowser = '<OBJECT ID="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>'; 
+			 document.body.insertAdjacentHTML('beforeEnd', WebBrowser); 
+			 WebBrowser1.ExecWB(6, 2); 
+			 WebBrowser1.outerHTML = "";
+		}
+	</script>
+	<body onload="printit();window.close();" style="background-color:#ffffff;">
+		<div style="border:1px solid #000000;text-align:center;position:absolute;top:0;left:0;width:300;font-family:verdana;">
+			<div style="font-size:16pt;">The Palace Cinema</div>
+			<div style="font-size:10pt;">Saville St, Malton, YO17 7LL</div>
+			
+
+			<div style="margin-top:8px;font-size:9pt;font-weight:bold;">www.palacemalton.com</div>
+			<table style="margin-top:8px;font-size:9pt;font-weight:bold;">
+				<tr>
+					<td style="text-align:right;">Info Line:</td>
+					<td>(01653) 698 899</td>
+				</tr>
+				<tr>
+					<td style="text-align:right;">Box Office:</td>
+					<td>(01653) 600 008</td>
+				</tr>
+			</table>
+			
+			<div style="border-top:1pt solid black; border-bottom:1pt solid black;">
+				<table style="font-size:10pt;" width="100%" >
+					<tr>
+						<td align="center">
+							<%=@sale.sale_time.strftime("%d/%m/%y %H:%M")%>
+						</td>
+						<td align="center">
+							Ticket #<%=format("%05i", @sale.id)%>
+						</td>
+					</tr>
+				<% if @sale.class.to_s  == "Booking" %>
+					<tr>
+						<td align="center">
+							Advance Booking
+						</td>
+            <% if not @sale.customer.nil? then %>
+						<td align="center">
+							<b><%=@sale.customer.name%></b>
+						</td>
+            <% end %>
+					</tr>
+				<% end %>
+
+				</table>
+			</div>
+			
+			<table width="100%" style="font-size:10pt;">
+			<% ts = Array.new(@sale.tickets)
+
+			this_showing = nil
+			i = 0
+			%>
+			<% while ts.size > 0 %>
+				
+				<% this_showing = Showing.find(ts[0].showing_id) %>
+				<tr>
+					<td colspan="3" align="left">
+						<br>
+						<b>
+							<%=this_showing.film.title%><br>
+						</b>
+							<%=this_showing.show_time.strftime("%d/%m/%y %H:%M")%>
+							<% single_screen = (this_showing.screens.size == 1) %>
+							<% if single_screen %>
+								- <%=this_showing.screens[0].name%>
+							<% else %>
+								- Multiple Screens
+							<% end %>
+					</td>
+				</tr>
+				<% for t in ts.collect {|t| (t.showing_id == ts[0].showing_id ? t : nil)}.compact%>
+				<% 	ts.delete(t) %>
+
+					<tr>
+						<td width="10%"></td>
+						<td width=100% align="left">
+							<%=t.ticket_type.name%>						
+						</td>
+						<td style="font-weight:bold;" align="right">
+							<%=t.ticket_type.price.as_price%>
+						</td>
+					</tr>
+				
+				<% end %>
+				<% srs = (@sale.seat_reservations & this_showing.seat_reservations) %>
+				<% if srs.size > 0 %>
+					<% if single_screen then %>
+					<tr>
+						<td></td>
+						<td align="center" style="border:1pt solid black;">
+							<% if srs.size > 0 %>
+								Seat Reservations<br>
+								<b><%=srs.collect {|sr| sr.seat.row + sr.seat.column + " "}%></b>
+							<% end %>
+						</td>
+					</tr>
+					<% else %>
+					<tr>
+						<td></td>
+						<td align="center" style="border:1pt solid black;">
+							<% if srs.size > 0 %>
+								Seat Reservations<br>
+								<% for sc in this_showing.screens %>							
+									<% this_screen_srs = srs.collect {|sr| (sr.seat.screen_id == sc.id ? sr : nil)}.compact%>
+									<% if this_screen_srs.size > 0 %>								
+										<b><%=sc.name%> - <%=this_screen_srs.collect {|sr| sr.seat.row + sr.seat.column + " "}%></b><br>
+									<% end %>
+								<% end %>
+							<% end %>
+						</td>
+					</tr>
+					<% end %>
+					
+				<% end %>		
+			<% end %>
+			
+			<% for r in @sale.refreshments%>
+				<tr>
+					<td colspan="2" align="left">
+						<%=r.name%>						
+					</td>
+					<td align="right">
+						<b><%=r.price.as_price%></b>
+					</td>
+				</tr>
+			<% end %>
+			
+			<% for p in @sale.products%>
+				<tr>
+					<td colspan="2" align="left">
+						<%=p.name%>						
+					</td>
+					<td align="right">
+						<b><%=p.price.as_price%></b>
+					</td>
+				</tr>
+			<% end %>
+			
+			<% for o in @sale.offers %>
+				<tr>
+					<td colspan="2" align="left">
+						<%=o.name%>
+					</td>
+					<td nowrap="true" align="right">
+						<b><%=(-o.refund_amount).as_price%></b>
+					</td>
+				</tr>
+			<% end %>
+			
+			<% if @sale.card_surcharge > 0 %>
+				<tr>
+					<td colspan="2" align="left">
+						Card Surcharge
+					</td>
+					<td align="right">
+						<b><%=Preference.get("card_surcharge").to_f.as_price%></b>
+					</td>
+				</tr>
+			<% end %>
+			<% if @sale.cheque_surcharge > 0 %>
+				<tr>
+					<td colspan="2" align="left">
+						Cheque Surcharge
+					</td>
+					<td align="right">
+						<b><%=Preference.get("cheque_surcharge").to_f.as_price%></b>
+					</td>
+				</tr>
+			<% end %>
+			
+			<%
+			#Other
+			%>
+			</table>
+			
+			<div style="border-top:1pt solid black;text-align:right;">
+				<table style="font-size: 11pt;" cellspacing="0" cellpadding="3">
+					<tr>
+						<td style="text-align:right;">
+							Total 
+						</td>
+						<td style="font-weight:bold;">
+							<%=@sale.total_price.as_price%>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:right;">
+							<% case @sale.payment_method.name
+							   when "Cash" %>
+								Cash Tendered 
+							<% when "Card" %>
+								Card Payment
+							<% when "Cheque" %>
+								Cheque Payment
+							<% end %>
+						</td>
+						<td style="font-weight:bold;">
+							<%=@sale.tendered.as_price%>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:right;">
+							Change 
+						</td>
+						<td style="font-weight:bold;">
+							<%=(@sale.tendered - @sale.total_price).as_price%>
+						</td>
+					</tr>
+				</table>
+			</div>
+		
+			<div style="font-size:10pt;">Fantastic, Family, Film Palace Cinema</div>
+      <div style="border-top:1pt solid #000000;margin-top:4px;font-size:7pt;font-weight:bold;">Guests are reminded that you are not<br>welcome to bring your own food and drink.</div>
+			<div style="margin-top:1px;margin-bottom:1px;font-size:6pt;">If you do, please do not insult us further by leaving your rubbish.</div>
+
+			<div style="border-top:1pt solid #000000;margin-top:4px;font-size:8pt;font-weight:bold;">PALACE CINEMA - PLAYING THE BEST IN MOVIES AND STAGE
+			</div>
+		
+		</div>
+	</body>
+</html>

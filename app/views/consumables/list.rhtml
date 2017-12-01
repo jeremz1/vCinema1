@@ -1,0 +1,21 @@
+All consumables: <br><br>
+
+<table border=1>
+
+<% for c in @consumables %>
+	<tr>
+		<td>
+			<%=c.name%>			
+		</td>
+		<td>
+			<%=link_to("[Edit]", url_for(:action => "edit", :id => c.id ))%>
+		</td>
+		<td>
+			<%=link_to("[Delete]", url_for(:action => "delete", :id => c.id ))%>
+		</td>
+	</tr>
+<% end %>
+
+</table>
+<br><br>
+<%=link_to("Add new consumable", url_for(:action => "new"))%>

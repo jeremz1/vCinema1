@@ -1,0 +1,61 @@
+<%
+	@event = "this.style.backgroundPosition='-180px 0px';setTimeout('resetBackgroundPosition(\\'%%EL%%\\');',100);"
+%>
+<table height="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<td>
+			<div id="ticket_sales_button" class="medium_button" onclick="<%=@event.gsub('%%EL%%', 'ticket_sales_button')%><%= remote_function(:url => { :action => :select_tickets_button }) %>" onselectstart="return false;">
+				<table><tr><td>Tickets</td></tr></table>
+			</div>
+		</td>
+	</tr>
+		<tr>
+		<td>
+			<div id="drinks_button" class="medium_button" onclick="<%=@event.gsub('%%EL%%', 'drinks_button')%><%= remote_function(:url => { :action => :select_drinks_button }) %>" onselectstart="return false;">
+				<table><tr><td>Soft Drinks</td></tr></table>
+			</div>
+		</td>
+	</tr>
+		<tr>
+		<td>
+			<div id="alcohol_button" class="medium_button" onclick="<%=@event.gsub('%%EL%%', 'alcohol_button')%><%= remote_function(:url => { :action => :select_alcohol_button }) %>" onselectstart="return false;">
+				<table><tr><td>Alcohol</td></tr></table>
+			</div>
+		</td>
+	</tr>
+		<tr>
+		<td>
+			<div id="snacks_button" class="medium_button" onclick="<%=@event.gsub('%%EL%%', 'snacks_button')%><%= remote_function(:url => { :action => :select_snacks_button }) %>" onselectstart="return false;">
+				<table><tr><td>Snacks</td></tr></table>
+			</div>
+		</td>
+	</tr>
+		<tr>
+		<td>
+			<div id="sweets_button" class="medium_button" onclick="<%=@event.gsub('%%EL%%', 'sweets_button')%><%= remote_function(:url => { :action => :select_sweets_button }) %>" onselectstart="return false;">
+				<table><tr><td>Sweets</td></tr></table>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div id="ices_button" class="medium_button" onclick="<%=@event.gsub('%%EL%%', 'ices_button')%><%= remote_function(:url => { :action => :select_ices_button }) %>" onselectstart="return false;">
+				<table><tr><td>Ices</td></tr></table>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div id="offers_button" class="medium_button" onclick="<%=@event.gsub('%%EL%%', 'offers_button')%><%= remote_function(:url => { :action => :select_offers_button }) %>" onselectstart="return false;">
+				<table><tr><td>Offers</td></tr></table>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div id="other_button" class="medium_button" onclick="<%=@event.gsub('%%EL%%', 'other_button')%><%= remote_function(:url => { :action => :select_other_button }) %>" onselectstart="return false;">
+				<table><tr><td>Other</td></tr></table>
+			</div>
+		</td>
+	</tr>
+</table>

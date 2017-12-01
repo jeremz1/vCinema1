@@ -1,0 +1,51 @@
+
+
+.selection_button {
+	background-color: #FFBBFF;
+	margin: 10px 10px 10px 10px;
+	cursor: pointer;
+	text-align: center;
+}
+
+.seat {
+	position: absolute;
+	width: 58px;
+	height: 58px;
+	display: inline;
+
+}
+
+.seat table {
+	width: 100%;
+	height: 100%;
+}
+
+.seat td {
+	text-align: center;
+	color: #ffffff;
+	font-size: 14pt;
+}
+
+.availableSeat {
+	background-color: #333355;
+	background-image: url(../../images/seats/available_seat.jpg)
+}
+
+.chosenSeat {
+	background-color: #333355;
+	background-image: url(../../images/seats/selected_seat.jpg)
+}
+
+.unavailableSeat {
+	background-color: #333355;
+	background-image: url(../../images/seats/unavailable_seat.jpg)
+}
+
+.tabs td {
+	color: #ffffff;
+	font-size: 14pt;
+}
+
+.tabs td.tab_joiner {
+	width:40px;
+}

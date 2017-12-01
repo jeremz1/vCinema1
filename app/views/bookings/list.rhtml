@@ -1,0 +1,33 @@
+Bookings with uncollected tickets: <br><br>
+
+<% if @bookings.size > 0 %>
+<table border="1">
+	<tr style="font-weight:bold;">
+		<td>
+			Booking #
+		</td>
+		<td align="center">
+			Name
+		</td>
+
+	</tr>
+	
+
+<% for booking in @bookings %>
+	<tr>
+		<td align="center">
+			<%=format("%05.f",booking.id)%>
+		</td>
+		<td>
+			<%=booking.customer.name%>
+		</td>
+		<td>
+			<%=link_to("[Mark Collected]", :action => "mark_collected", :id => booking.id)%>
+		</td>
+	</tr>
+<% end %>
+
+</table>
+<% else %>
+	<b><i>None</i></b><br>
+<% end %>

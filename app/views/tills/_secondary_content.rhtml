@@ -1,0 +1,72 @@
+<div id="secondard_header" align="right"><%=render :partial => "secondary_header"%></div>
+
+<% if @secondary_mode == "till" %>
+
+
+	<% if session[:user_data][:sale_step] == 0 then %><%# Home page %>
+	
+		<div id="secondary_dynamic"><%=render :partial => "secondary_home"%></div>
+		<div id="secondary_cart"><%=render :partial => "secondary_cart"%></div>
+		<div id="secondary_ads"><%=render :partial => "secondary_ads", :locals => {:page => "home"}%></div>	
+
+	<% elsif session[:user_data][:sale_step] == 1 then %><%# Choose whether to reserve seats %>
+	
+		<div id="secondary_cart"><%=render :partial => "secondary_cart"%></div>
+		<div id="secondary_ads"><%=render :partial => "secondary_ads", :locals => {:page => "choose_reserve_seats"}%></div>	
+
+	
+	<% elsif session[:user_data][:sale_step] == 2 then %><%# Make seat reservations %>
+	
+		<div id="secondary_seats"><%=render :partial => "secondary_seats"%></div>
+
+	
+	<% elsif session[:user_data][:sale_step] == 3 then %><%# Choose whether booking or immediate sale %>
+		
+		<div id="secondary_cart"><%=render :partial => "secondary_cart"%></div>
+		<div id="secondary_ads"><%=render :partial => "secondary_ads", :locals => {:page => "choose_immediate_or_booking"}%></div>	
+		
+	<% elsif session[:user_data][:sale_step] == 4 then %><%# Select new or existing customer %>
+	
+		<div id="secondary_cart"><%=render :partial => "secondary_cart"%></div>
+		<div id="secondary_ads"><%=render :partial => "secondary_ads", :locals => {:page => "choose_customer_type"}%></div>	
+		
+	<% elsif session[:user_data][:sale_step] == 5 then %><%# Create new customer %>
+	
+		<div id="secondary_cart"><%=render :partial => "secondary_cart"%></div>
+		<div id="secondary_ads"><%=render :partial => "secondary_ads", :locals => {:page => "create_new_customer"}%></div>	
+		
+	<% elsif session[:user_data][:sale_step] == 6 then %><%# Find existing customer %>
+			
+		<div id="secondary_cart"><%=render :partial => "secondary_cart"%></div>
+		<div id="secondary_ads"><%=render :partial => "secondary_ads", :locals => {:page => "choose_existing_customer"}%></div>	
+	
+	<% elsif session[:user_data][:sale_step] == 7 then %><%# Payment type %>
+	
+		<div id="secondary_cart"><%=render :partial => "secondary_cart"%></div>
+		<div id="secondary_dynamic"><%=render :partial => "secondary_total"%></div>
+		<div id="secondary_ads"><%=render :partial => "secondary_ads", :locals => {:page => "choose_payment_type"}%></div>	
+	
+	<% elsif session[:user_data][:sale_step] == 8 then %><%# Confirm payment + print %>
+	
+		<div id="secondary_cart"><%=render :partial => "secondary_cart"%></div>
+		<div id="secondary_dynamic"><%=render :partial => "secondary_total"%></div>
+		<div id="secondary_ads"><%=render :partial => "secondary_ads", :locals => {:page => "take_payment"}%></div>	
+				
+	<% elsif session[:user_data][:sale_step] == 9 then %><%# Give change then reset%>
+	
+		<div id="secondary_cart"><%=render :partial => "secondary_cart"%></div>
+		<div id="secondary_dynamic"><%=render :partial => "secondary_change"%></div>
+		<div id="secondary_ads"><%=render :partial => "secondary_ads", :locals => {:page => "collect_change"}%></div>	
+	
+	<% end %>
+	
+<% else %>
+	<table style="position:absolute;left:0px;top:84px;height:400px;width:1024px;font-size:36pt;color:#aaaaaa;">
+		<tr>
+			<td align="center">
+				Sorry this Till is not in use.
+			</td>
+		</tr>
+	</table>
+	<div id="secondary_ads" style="left:172px;"><%=render :partial => "secondary_ads", :locals => {:page => "till_not_in_use"}%></div>	
+<% end %>

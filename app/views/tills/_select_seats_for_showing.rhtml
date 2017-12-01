@@ -1,0 +1,138 @@
+
+
+<% 
+@showing_id = session[:user_data][:showing_id]
+this_showing = Showing.find_by_id(@showing_id)
+
+
+@selection_string = session[:user_data][:showing_reservation_strings][session[:user_data][:showing_id]] if session[:user_data][:showing_reservation_strings] != nil
+
+if @selection_string == nil
+	@selection_string = ""
+	count = @selection_string.split('|').size
+	possible_seat_ids = Array.new
+	this_showing.screens.each {|s| s.seats.each {|t| possible_seat_ids << t.id} }
+	possible_seat_ids.collect! {|s| (SeatReservation.find_by_seat_id_and_showing_id(s, this_showing.id) == nil ? s : nil)}.compact!
+	
+	while count < session[:user_data][:ticket_count] do
+	  @selection_string = @selection_string + possible_seat_ids.shift.to_s + "|"
+	  count = @selection_string.split('|').size
+	end
+end
+
+%>
+
+
+<div align="center" style="text-align: center;">
+	
+<form id="form<%=@uid%>"><input name="selected_seats" type="hidden" value="<%=@selection_string%>">
+<div align="center">
+<table width="50%">
+	
+	<tr>
+			
+<% for screen in this_showing.screens %>
+		<td align="center">
+
+			<div class="grid_button" style="margin-left: 15px;margin-right: 15px;" onclick="<% for s in this_showing.screens %> document.getElementById('screen<%=s.id%>').style.display = 'none'; document.getElementById('secondary_screen<%=s.id%>').style.display = 'none';<% end %>document.getElementById('screen<%=screen.id%>').style.display = 'block';document.getElementById('secondary_screen<%=screen.id%>').style.display = 'block';">
+				<table><tr><td>
+					<%=screen.name%>	
+				</td></tr></table>
+			</div>
+		</td>
+
+<% end %>
+	</tr>
+</table>
+</div>
+</form>
+	
+
+<% 
+
+	#TODO: Allow to choose screen.
+	i = 0
+	for screen in this_showing.screens
+	i = i + 1
+%>
+
+	<div id="screen<%=screen.id%>" style="position: absolute; top: 120px; left: 0;<%=(i > 1 ? "display:none" : "")%>;">
+	
+	<%
+	
+
+	@seats = Seat.find_all_by_screen_id(screen)
+	@max_selected = session[:user_data][:ticket_count]
+
+	max_x = 1
+	@seats.each {|s| if s.x_pos > max_x then max_x = s.x_pos end}
+	puts max_x
+
+	seat_size_x = 60
+	seat_size_y = 60
+	
+	origin_x = 432 - ((max_x+1) * 60)/2
+
+	for s in @seats
+	
+	sr = SeatReservation.find_by_seat_id_and_showing_id(s.id, this_showing.id)
+	
+	is_unavailable = (sr != nil)
+	is_chosen = @selection_string.split('|').include?(s.id.to_s) unless @selection_string == nil
+	%>
+	
+	
+	
+	<div id="seat<%=s.id%>" class="seat divLink <%=(is_unavailable ? "unavailableSeat" : (is_chosen ? "chosenSeat" : "availableSeat"))%>" style="left: <%=s.x_pos.to_f * seat_size_x + origin_x%>;top: <%=s.y_pos.to_i * seat_size_y%>;" 
+	
+	<% if not is_unavailable then %>
+	onclick="
+			selectedSeats = form<%=@uid%>.selected_seats.value.split('|');
+			count = selectedSeats.length - 1;
+			match = -1;
+			for(i=0;i<count;i++)
+			{
+				if (selectedSeats[i] == '<%=s.id%>')
+					match=i;
+			}
+			if (match == -1)
+			{
+				if (count >= <%=@max_selected%>)
+				{
+					form<%=@uid%>.selected_seats.value = form<%=@uid%>.selected_seats.value.substr(form<%=@uid%>.selected_seats.value.indexOf('|') + 1);
+					document.getElementById('seat' + selectedSeats[0]).className = 'seat divLink availableSeat';
+					document.getElementById('secondary_seat' + selectedSeats[0]).className = 'seat divLink availableSeat';
+				}
+				form<%=@uid%>.selected_seats.value+='<%=s.id%>|';
+				document.getElementById('seat<%=s.id%>').className = 'seat divLink chosenSeat';
+				document.getElementById('secondary_seat<%=s.id%>').className = 'seat divLink chosenSeat';
+			}
+			"
+	<% end %>	
+			
+			>
+			
+			
+			<table>
+				<tr>
+					<td>
+						<%=s.row%><%=s.column%>
+					</td>
+				</tr>
+			</table>
+
+	</div>
+	
+	
+	<% 
+	
+	end
+	
+	%>
+	</div>
+
+<%
+
+	end
+%>
+</div>

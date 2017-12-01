@@ -1,0 +1,48 @@
+<html>
+ <head>
+   <title>vCinema 1.0</title>
+   <%= javascript_include_tag "prototype" %>
+   <%= stylesheet_link_tag *@stylesheets %>
+   <%= stylesheet_link_tag "calendar/red/style.css"%>
+   <%= stylesheet_link_tag "admin/_controller.css"%>
+ </head>
+ <body style="overflow: auto;">
+
+   <h1>Cinema Admin :: <%= @page_heading %></h1>
+   <hr>
+   
+   <div id="adminNav">
+   	
+	<%= link_to "Overview", :controller => "Admin", :action => "home" %> <br>
+	<%= link_to "Ticket Types", :controller => "Ticket_types", :action => "list" %> <br>
+	<%= link_to "Certificates", :controller => "Certificates", :action => "list" %> <br>
+	<%= link_to "Films", :controller => "Films", :action => "list" %> <br>
+	<%= link_to "Showings", :controller => "Showings", :action => "list" %> <br>
+	<%= link_to "Refreshments", :controller => "Refreshments", :action => "list" %> <br>
+	<%= link_to "Consumables", :controller => "Consumables", :action => "list" %> <br>
+	<%= link_to "Products", :controller => "Products", :action => "list" %> <br>
+	<%= link_to "Offers", :controller => "Offers", :action => "list" %> <br>
+	<%= link_to "Users", :controller => "Users", :action => "list" %> <br>
+	<%= link_to "Preferences", :controller => "Preferences", :action => "list" %> <br>
+	<%= link_to "Ticket Collection", :controller => "Bookings", :action => "list" %> <br>
+	<%= link_to "Sales", :controller => "Sales", :action => "list_all" %> <br>
+
+
+	
+	<br><br>
+	<%= link_to "Logout", :controller => "Admin", :action => "logout"%>
+   </div>
+   
+   <div id="adminContent">
+   	
+	
+	
+
+   <%= flash[:notice]%>
+   <hr>
+   
+   
+   <%= @content_for_layout %>
+   </div>
+ </body>
+</html>

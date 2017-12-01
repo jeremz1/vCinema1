@@ -1,0 +1,31 @@
+Timesheet for <%=@user.full_name%>:<br><br>
+
+<table>
+
+<%
+events = @user.staff_events.sort {|a,b| b.time <=> a.time}
+
+for i in 0..(events.size - 1)
+e = events[i]
+%>
+
+<tr>
+	<td>
+		<%=e.class.to_s.gsub('Clock','')%>&nbsp;&nbsp;&nbsp;
+	</td>
+	<td>
+		<%=e.time.strftime("%d/%m/%y %H:%M")%>
+	</td>
+	<% if e.class.to_s == "ClockOut" %>
+	<td>
+		(<%=format("%0.2f",(e.time - events[i+1].time) / 60.0 / 60.0)%>Hours) 
+	</td>
+<td>
+		<%=format("%0.2f",(e.time - events[i+1].time) / 60.0 / 60.0)%> 
+	</td>
+	<% end %>
+</tr>
+
+<% end %>
+
+</table>

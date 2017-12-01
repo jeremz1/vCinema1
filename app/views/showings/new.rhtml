@@ -1,0 +1,97 @@
+
+
+<form action="<%=url_for(:action => "create", :only_path => false )%>" method="post">
+	
+This will add new showings of 
+
+	
+	<%=select("film", "id", Film.find(:all).reverse.collect {|f| [f.title, f.id]})%>
+<!-- on <%=select("screen", "id", Screen.find(:all).collect {|s| [s.name, s.id]})%> -->
+at
+	<%=select("showtime", "hour", (0..23).collect {|i| i.to_s}, :selected => "19")%>
+	<%=select("showtime", "minute", ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"], :selected => "30")%>		
+
+
+
+on the days and screens selected below.
+<br>
+<br>
+Tea Matinee: <%= text_field("showtime", "tea_matinee", "size" => 1)%> 
+<br>
+<br>
+<table>
+	<tr valign="top">
+		<td>Screens:</td>
+		<td>
+			<%=select("screens", "id", Screen.find(:all).collect {|s| [s.name, s.id]}, {}, :multiple => true)%>
+		</td>
+		<td width="20px"></td>
+		<td>Allocated Ticket Types:</td>
+		<td>
+			<%=select("ticket_types", "id", TicketType.find(:all, :conditions => {"available" => 1}).collect {|tt| [tt.name, tt.id]}, {}, :multiple => true)%>			
+		</td>
+	</tr>
+</table>
+<br><br>
+<%
+p = Proc.new {|d| "<div style=\"cursor:pointer;\" onclick=\"
+								if (selectedDates.value.indexOf('" + d.to_s + ";') > -1)
+								{
+									selectedDates.value = selectedDates.value.replace('" + d.to_s + ";','');
+									this.parentNode.className = this.parentNode.className.replace(' specialDay','');
+								}
+								else
+								{
+									selectedDates.value += '" + d.to_s + ";';
+									this.parentNode.className += ' specialDay';
+								}
+								\">" + d.day.to_s + "</div>" }
+%>
+<table border="1">
+	
+	<tr valign="top">
+		<td>
+			<%=calendar(:year => Time.now.year, :month => Time.now.month, :first_day_of_week => 5, &p)%>			
+		</td>
+		<td>
+			<%=calendar(:year => Time.now.months_since(1).year, :month => Time.now.months_since(1).month, :first_day_of_week => 5, &p)%><br>			
+		</td>
+		<td>
+			<%=calendar(:year => Time.now.months_since(2).year, :month => Time.now.months_since(2).month, :first_day_of_week => 5, &p)%><br>			
+		</td>
+		<td>
+			<%=calendar(:year => Time.now.months_since(3).year, :month => Time.now.months_since(3).month, :first_day_of_week => 5, &p)%><br>			
+		</td>
+		<td>
+			<%=calendar(:year => Time.now.months_since(4).year, :month => Time.now.months_since(4).month, :first_day_of_week => 5, &p)%><br>			
+		</td>
+		<td>
+			<%=calendar(:year => Time.now.months_since(5).year, :month => Time.now.months_since(5).month, :first_day_of_week => 5, &p)%><br>
+		</td>
+		</tr>
+		<tr valign="top">
+		<td>
+			<%=calendar(:year => Time.now.months_since(6).year, :month => Time.now.months_since(6).month, :first_day_of_week => 5, &p)%><br>			
+		</td>
+		<td>
+			<%=calendar(:year => Time.now.months_since(7).year, :month => Time.now.months_since(7).month, :first_day_of_week => 5, &p)%><br>			
+		</td>
+		<td>
+			<%=calendar(:year => Time.now.months_since(8).year, :month => Time.now.months_since(8).month, :first_day_of_week => 5, &p)%><br>			
+		</td>
+		<td>
+			<%=calendar(:year => Time.now.months_since(9).year, :month => Time.now.months_since(9).month, :first_day_of_week => 5, &p)%><br>			
+		</td>
+		<td>
+			<%=calendar(:year => Time.now.months_since(10).year, :month => Time.now.months_since(10).month, :first_day_of_week => 5, &p)%><br>			
+		</td>
+		<td>
+			<%=calendar(:year => Time.now.months_since(11).year, :month => Time.now.months_since(11).month, :first_day_of_week => 5, &p)%><br>			
+		</td>
+		</tr>
+</table>
+<input name="selectedDates" type="hidden">
+
+<%=submit_tag%>
+</form>
+

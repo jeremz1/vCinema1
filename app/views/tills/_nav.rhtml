@@ -1,0 +1,60 @@
+<%
+	@event = "this.style.backgroundPosition='-180px 0px';setTimeout('resetBackgroundPosition(\\'next_button\\');',100);"
+	@event2 = "this.style.backgroundPosition='-180px 0px';setTimeout('resetBackgroundPosition(\\'next_button2\\');',100);"
+%>
+
+<% if session[:user_data][:sale_step] == 0 then %><%# Home page %> 
+
+<div id="next_button" class="medium_button" style="position:absolute; left: 45px;" onclick="<%=@event%><%= remote_function(:url => { :action => :confirm_products }) %>">
+	<table><tr><td>Confirm &gt;&gt;</td></tr></table>
+</div>
+
+<% elsif session[:user_data][:sale_step] == 2 then %><%# Make seat reservations %>
+
+<div id="next_button" class="medium_button" style="position:absolute; left: 45px;" onclick="<%=@event%>new Ajax.Request('finish_seat_reservation', {asynchronous:true, evalScripts:true, parameters:Form.serialize('form<%=@uid%>')}); return false;">
+	<table><tr><td>Confirm &gt;&gt;</td></tr></table>
+
+</div>
+
+<% elsif session[:user_data][:sale_step] == 5 then %><%# Confirm new customer details %>
+
+<div id="next_button" class="medium_button" style="position:absolute; left: 45px;" onclick="<%=@event%>new Ajax.Request('confirm_new_customer', {asynchronous:true, evalScripts:true, parameters:Form.serialize('customerForm<%=@uid%>')}); return false;">
+	<table><tr><td>Confirm &gt;&gt;</td></tr></table>
+</div>
+
+<% elsif session[:user_data][:sale_step] == 8 then %><%# Confirm payment has been made %>
+
+<div id="next_button" class="medium_button" style="position:absolute; left: 45px;" onclick="<%=@event%>new Ajax.Request('confirm_payment_taken', {asynchronous:false, evalScripts:true, parameters:'tendered=' + $F(document.getElementById('cash_tendered')), onSuccess: function(t) {w = window.open('print_receipt','myWindow','width=400,height=200,left=0,top=100,status=no');w.blur();<% if @is_booking then %>window.open('print_booking_slip','myWindow2','width=400,height=200,left=0,top=100,status=no');w2.blur();<% end %>window.focus();}});">
+	<table cellspacing="0" cellpadding="0">
+		<tr>
+			<td>
+				Print<br>Receipt 
+			</td>
+			<td style="text-align:left;">
+				&gt;&gt;
+			</td>
+		</tr>
+	</table>
+</div>
+<% if session[:user_data][:selected_products][:tickets].length == 0 %>
+
+	<div id="next_button2" class="medium_button" style="position:absolute; top:-100px;left: 45px;" onclick="<%=@event2%>new Ajax.Request('confirm_payment_taken', {asynchronous:false, evalScripts:true, parameters:'tendered=' + $F(document.getElementById('cash_tendered')), onSuccess: function(t) {w = window.open('print_blank','myWindow','width=400,height=200,left=0,top=100,status=no');w.blur();window.focus();}});">
+		<table cellspacing="0" cellpadding="0">
+			<tr>
+				<td>
+					No<br>Receipt 
+				</td>
+				<td style="text-align:left;">
+					&gt;&gt;
+				</td>
+			</tr>
+		</table>
+	</div>
+<% end %>
+<% elsif session[:user_data][:sale_step] == 9 then %><%# Reset till after sale.%>
+
+<div id="next_button" class="medium_button" style="position:absolute; left: 45px;" onclick="<%=@event%><%= remote_function(:url => { :action => :sale_finished }) %>">
+	<table><tr><td>Done</td></tr></table>
+</div>
+
+<% end %>

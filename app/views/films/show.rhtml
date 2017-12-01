@@ -1,0 +1,11 @@
+
+Click <%=link_to("here", :controller => "showings", :action => "list_by_film", :id => @film.id)%> to view all <%=@film.showings.size%> showings of this film.<br><br>
+
+Click here to view all ticket sales for this film.<br><br>
+
+<%= link_to("Edit this film", :action => "edit", :id => @film.id)%><br><br>
+
+<%= link_to("Delete this film", :action => "delete", :id => @film.id)%><br><br>
+
+
+<%= link_to("<< Back to film list", :action => :list)%>

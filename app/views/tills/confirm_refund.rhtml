@@ -1,0 +1,21 @@
+<div align="center" style="color:#ffffff;"><br><br><br>
+
+Ticket #<%=format('%05i',@sale.id)%><br><br>
+
+Sold on: <%=@sale.sale_time.strftime("%d/%m/%y %H:%M")%><br><br>
+
+Total Price: <%=@sale.total_price.as_price%><br><br>
+	<%
+		@buttons = Array.new
+		if @sale.refunded
+			%>
+			Already Refunded.<br><br>
+			<%
+		else
+			@buttons << {:id => 0, :caption => "Confirm: Refund Ticket ##{format('%05i',@sale.id)}", :on_loaded => "w = window.open('print_refund/#{@sale.id}','myWindow','width=400,height=200,left=0,top=100,status=no');w.blur();window.focus();document.location.href='choose_mode'"}
+		end
+		@buttons << {:id => 1, :caption => "Cancel", :on_loaded => "document.location.href='refund'"}
+
+	%>
+	<%= render(:partial => "shared/large_button_list")%>
+</div>

@@ -1,0 +1,17 @@
+<div align="center" style="color:#ffffff;"><br><br><br>
+
+Ticket #<%=format('%05i',@sale.id)%><br><br>
+
+Customer: <%=@sale.customer.name%><br><br>
+
+Collected: <%=(@sale.collected ? "Yes": "No")%><br><br>
+
+	<%
+
+		@buttons = [{:id => 0, :caption => "Confirm: Ticket ##{format('%05i',@sale.id)} was collected", :on_loaded => "document.location.href='set_ticket_collected/#{@sale.id}'"}]
+		
+		@buttons << {:id => 1, :caption => "Cancel", :on_loaded => "document.location.href='ticket_collection'"}
+
+	%>
+	<%= render(:partial => "shared/large_button_list")%>
+</div>

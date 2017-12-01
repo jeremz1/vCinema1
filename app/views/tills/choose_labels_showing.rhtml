@@ -1,0 +1,16 @@
+<div align="center" style="color:white;">
+Print labels for:
+
+<br><br>
+	<%
+		@buttons = Array.new
+		for i in 0..@showings.size-1
+			@buttons << {:id => i, :caption => @showings[i].film.title + " - " + @showings[i].show_time.strftime("%d/%m/%y %H:%M"), :on_loaded => "document.location.href='print_labels/#{@showings[i].id}'"}
+			break if i == 3
+		end
+
+		@buttons << {:id => i+1, :caption => "Cancel", :on_loaded => "document.location.href='choose_mode'"}
+	%>
+	<%= render(:partial => "shared/large_button_list")%>
+
+</div>

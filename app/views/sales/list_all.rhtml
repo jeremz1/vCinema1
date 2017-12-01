@@ -1,0 +1,161 @@
+Displaying all sales, most recent first.
+
+<hr>
+<% for s in @sales.sort {|a,b| -(a.sale_time <=> b.sale_time)} %>
+
+	<b>#<%=format("%05i", s.id)%></b> - <%=s.sale_time.strftime("%d/%m/%y - %H:%M")%><br><br>
+	
+	<table>
+		<tr>
+			<td width="20px">
+				
+			</td>
+			<td>
+			
+			<table>
+				<tr>
+					<td>
+						Till operated by:
+					</td>
+					<td>
+						<%=s.user.full_name%>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Payment method:
+					</td>
+					<td>
+						<%=s.payment_method.name%>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Sale refunded:
+					</td>
+					<td>
+						<%=(s.refunded ? "Yes" : "No")%>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Total:
+					</td>
+					<td>
+						<%=s.total_price.as_price%>
+					</td>
+				</tr>
+			</table>
+
+			 
+				
+			<br>
+			<% if s.ticket_sales.size > 0 %>
+					<br>
+					<table border="1">
+						<tr>
+							<td>
+								<b>Ticket Type</b>
+							</td>
+							<td>
+								<b>Film</b>
+							</td>
+							<td>
+								<b>Price</b>
+							</td>
+						</tr>
+						<% for ts in s.ticket_sales %>
+							<tr>
+								<td>
+									<%=ts.ticket.ticket_type.name%>
+								</td>
+								<td>
+									<%=ts.ticket.showing.film.title%>
+								</td>
+								<td>
+									<%=ts.price.as_price%>
+								</td>
+							</tr>
+						<% end %>
+					</table>
+			<% end %>
+			<% if s.offer_sales.size > 0 %>
+					<br>
+					<table border="1">
+						<tr>
+							<td>
+								<b>Offer</b>
+							</td>
+							<td>
+								<b>Refund Amount</b>
+							</td>
+						</tr>
+						<% for os in s.offer_sales %>
+							<tr>
+								<td>
+									<%=os.offer.name%>
+								</td>
+								<td>
+									<%=os.refund_amount.as_price%>
+								</td>
+							</tr>
+						<% end %>
+					</table>	
+
+			<% end %>
+			<% if s.refreshment_sales.size > 0 %>
+					<br>
+					<table border="1">
+						<tr>
+							<td>
+								<b>Refreshment</b>
+							</td>
+							<td>
+								<b>Price</b>
+							</td>
+						</tr>
+						<% for rs in s.refreshment_sales %>
+							<tr>
+								<td>
+									<%=rs.refreshment.name%>
+								</td>
+								<td>
+									<%=rs.price.as_price%>
+								</td>
+							</tr>
+						<% end %>
+					</table>	
+			<% end %>
+			<% if s.other_product_sales.size > 0 %>
+					<br>
+					<table border="1">
+						<tr>
+							<td>
+								<b>Product</b>
+							</td>
+							<td>
+								<b>Price</b>
+							</td>
+						</tr>
+						<% for ps in s.other_product_sales %>
+							<tr>
+								<td>
+									<%=ps.product.name%>
+								</td>
+								<td>
+									<%=ps.price.as_price%>
+								</td>
+							</tr>
+						<% end %>
+					</table>	
+			<% end %>
+	
+			</td>
+		</tr>
+	</table>
+	<br><br>
+	<hr>
+	<hr>
+
+
+<% end %>

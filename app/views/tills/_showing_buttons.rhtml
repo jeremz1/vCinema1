@@ -1,0 +1,23 @@
+<%
+showing_string = proc do |s| 
+        s.show_time.strftime("%a %d %b<br>%H:%M")
+    end
+
+%>
+
+
+<%
+	@event = "this.style.backgroundPosition='-180px 0px';setTimeout('resetBackgroundPosition(\\'%%EL%%\\');',100);"
+%>
+
+<% for s in session[:user_data][:showings] %>
+
+	<div id="showing_button<%=s.to_s%>"  class="medium_button" onclick="<%=@event.gsub('%%EL%%', 'showing_button' + s.to_s)%>new Ajax.Request('../tills/select_showing_button/<%=s%>', {asynchronous:true, evalScripts:true, parameters:Form.serialize('form<%=@uid%>')});">
+		<table><tr><td><%=showing_string[Showing.find_by_id(s)]%></td></tr></table>
+		
+	</div>
+	<br>
+<% end %>		
+
+
+<%= render :partial => "back_button"%>

@@ -1,0 +1,17 @@
+<% for s in @showings %>
+
+	<%=link_to(s.film.title, :controller => "films", :action => "show", :id => s.film.id)%>: <%=s.show_time.strftime("%a %d %b")%> 
+at <%=s.show_time.strftime("%H:%M")%> (<%=(s.screens.collect {|sc| sc.name }).join(", ")%>) 
+	
+	<% if s.can_delete %>
+		<%=link_to("[Delete]", :action => "delete", :id => s.id)%>
+	<% else %>
+		(<%= pluralize(s.tickets.size, "ticket")%> sold)
+		
+	<% end %>
+	<%=link_to("[Edit]", :action => "edit", :id => s.id)%>
+	<br><br>
+
+<% end %>
+
+

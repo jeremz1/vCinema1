@@ -1,0 +1,9 @@
+Customer Details
+
+<form id="customerDetails">
+	First Name:<input name="firstName" type="text"><br>
+	Last Name:<input name="lastName" type="text"><br>
+	Telephone:<input name="telephone" type="text"><br>
+</form>
+
+<div class="divLink" onclick="new Ajax.Request('/users/confirm_customer_details', {asynchronous:true, evalScripts:true, parameters:Form.serialize('customerDetails')});">Confirm Customer Details</div>

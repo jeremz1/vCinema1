@@ -1,0 +1,22 @@
+
+<form action="../update/<%=@preference.id%>" method="post">
+
+<table>
+
+<tr>
+<td>Setting:</td><td><%= text_field("preference", "setting", "size" => 50 )%></td>
+</tr>
+
+<tr>
+<td>Value:</td><td><%= text_field("preference", "value", "size" => 50)%></td>
+</tr>
+
+
+</table>
+
+<%= submit_tag("Save Changes")%>
+
+
+
+
+</form>

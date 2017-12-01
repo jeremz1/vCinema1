@@ -1,0 +1,20 @@
+<br><br><br>
+
+<div align="center" style="color:#ffffff;"><h2><%=@user.full_name%></h2></div>
+<br><br>
+<i style="color:#ffffff;">Enter Pin</i>
+<form name="formPin" method="post" action="login">
+
+<input id="user_username" name="user[username]" size="30" type="hidden" value="<%=@user.username%>" />
+<input style="font-size:24pt;text-align:center;" id="user_pin" name="user[pin]" type="password" maxlength="4" size="4" onkeyup="if (formPin.user_pin.value.length == 4) {formPin.submit();}" onfocus="textFocus=true;">
+
+
+</form>
+<div style="position:absolute;left:387px;top:300px;">
+<%
+	@text_field = "formPin.user_pin"
+	@length_event = {:length => 4, :function => "formPin.submit();"}
+	@price_input = false
+%>
+<%=render :partial => "shared/pin_keypad"%>	
+</div>

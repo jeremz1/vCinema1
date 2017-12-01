@@ -1,0 +1,8 @@
+
+<% sale = Sale.find(session[:user_data][:new_sale_id]) %>
+
+<div style="text-align:center;color:#ffffff;">
+<br><br>
+
+	<div style="font-size:36pt;">Change: <%=(sale.tendered - sale.total_price).as_price%></div>
+</div>

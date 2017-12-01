@@ -1,0 +1,9 @@
+<br>The Palace Cinema IS the place for films!!
+<br>
+<br>
+<%=link_to("List Showings by film", :action => "list_by_film")%>
+<br>
+<br>
+<%=link_to("List Showings by date", :action => "list_by_date")%><br><br>
+
+<a href="<%= url_for(:controller => "showings", :action => 'new', :id => nil, :only_path => false) %>">Add new showings :-)</a> 

@@ -1,0 +1,25 @@
+
+<div id="login" align="center" style="position:absolute;left:0px;top:10px;width:1024px;height:768px;">
+	<%
+		@buttons = Array.new
+		@users = User.find(:all, :conditions => {"current" => 1})
+		@users.sort! {|a,b| a.last_name <=> b.last_name}
+		for u in @users
+			@buttons << {:id => u.id, :caption => u.full_name, :submit_url => "enter_pin", :on_loaded => "setTimeout('setFocus(\\'user_pin\\');',10);" }
+		end
+
+	%>
+	<div align="center" style="position:absolute;left:225px;">
+	<%= render(:partial => "shared/button_grid")%>
+	</div>
+</div>
+
+<!--
+<% form_tag("login") do%>
+    <label for="user_username">Username : </label><%= text_field 'user', 'username'%><br>
+    <label for="user_password">Password : </label><%= password_field 'user', 'pin'%><br> 
+    
+    <%= submit_tag "Login"%>
+<% end %>
+
+-->

@@ -1,0 +1,8 @@
+Films with certificate "<%=@certificate.name%>":<br><br>
+
+<% for f in Film.find(:all, :conditions => {:certificate_id => @certificate.id})%>
+	<%=f.title%><br>
+<% end %>
+<br><Br>
+
+<%= link_to("<< Back to certificate list", :action => :list)%>

@@ -1,0 +1,28 @@
+
+<% if @product == nil %>
+	Displaying all offers:<br><br>
+<% else %>
+	Only displaying offers requiring the product "<%=@product.name%>".<br>
+	Click <%=link_to("here", :action => "list", :id => nil)%> to display all offers.<br><br>
+<% end %>
+
+<table border="1">
+	
+	<tr>
+		<td>Name</td>
+		<td>Refund Amount</td>
+		<td>Details</td>
+	</tr>
+<% for o in @offers %>
+	<tr>
+		<td><%=link_to(o.name, :action => "edit", :id => o.id)%></td>
+		<td><%=o.refund_amount.as_price%></td>
+		<td><% if o.automatic %>Automatic<% else %>Manual<% end %>, <% if o.available %>Available<% else %>Unavailable<% end %></td>
+		<td><%=link_to("[Delete]", :action => "delete", :id => o.id)%></td>
+	</tr>
+
+<% end %>
+
+</table>
+<br><br>
+<%=link_to("Add a new offer...", :action => "new")%>

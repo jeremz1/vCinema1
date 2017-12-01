@@ -1,0 +1,70 @@
+<div class="tabs">
+	
+<%
+	#us = User.get_recent()
+	count = 0#us.length
+
+	@tabs = Array.new
+	for u in User.get_recent(session[:user])
+		@tabs << {:caption => u.full_name, :submit_url => ((u.id == session[:user].id) ? "" : "switch_user/#{u.id}"), :open => (u.id == session[:user].id)}
+	end
+
+	@tabs << {:caption => "Other...", :submit_url => "logout", :open => false}
+
+%>
+
+
+<table cellspacing="0">
+	<tr style="height:70px;">
+		
+		<% if @tabs[0][:open] %>
+			<td style="width:8px;background-image:url(../images/tabs/open_middle.jpg);"></td>							
+		<% else %>
+			<td style="width:8px;background-image:url(../images/tabs/closed_middle.jpg);"></td>							
+		<% end %>
+		
+		<% for i in 0..(@tabs.size - 1)%>
+			
+			<% if @tabs[i][:open] %>
+				<td style="cursor:pointer; background-image:url(../images/tabs/open_middle.jpg);" onclick="document.location.href='choose_mode'" onselectstart="return false;"><%=@tabs[i][:caption]%></td>				
+			<% else %>
+			
+				<td style="cursor:pointer;background-image:url(../images/tabs/closed_middle.jpg);" onclick="document.location.href='<%=@tabs[i][:submit_url]%>'" onselectstart="return false;"><%=@tabs[i][:caption]%></td>								
+			
+			<% end %>
+			
+			<% if i == (@tabs.size - 1) then %>
+				<% if @tabs[i][:open] then %>
+					<td class="tab_joiner" style="background-image:url(../images/tabs/open_end.jpg);"></td>				
+				<% else %>
+					<td class="tab_joiner" style="background-image:url(../images/tabs/closed_end.jpg);"></td>
+				<% end %>
+			<% else %>
+				<% if @tabs[i+1][:open] then %>
+					<td class="tab_joiner" style="background-image:url(../images/tabs/open_left.jpg);"></td>				
+				<% else %>
+					<% if @tabs[i][:open] then %>
+						<td class="tab_joiner" style="background-image:url(../images/tabs/open_right.jpg);"></td>										
+					<% else %>
+						<td class="tab_joiner" style="background-image:url(../images/tabs/closed_between.jpg);"></td>										
+					<% end %>
+				<% end %>
+			<% end %>
+			
+		<% end %>		
+		
+		
+		<td class="tab_joiner" style="background-image:url(../images/tabs/end.jpg);"></td>
+
+	</tr></table>
+</div>
+
+<%
+	@event = "this.style.backgroundPosition='-180px 0px';setTimeout('resetBackgroundPosition(\\'%%EL%%\\');',100);"
+%>
+
+<% if session[:user_data][:sale_step] != 9 then %>
+<div id="clear_sale_button" class="medium_button" onclick="<%=@event.gsub('%%EL%%','clear_sale_button')%><%= remote_function(:url => { :action => :cancel_sale }) %>">
+	<table><tr><td>Cancel<br>Sale</td></tr></table>
+</div>
+<% end %>

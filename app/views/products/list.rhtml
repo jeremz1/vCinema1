@@ -1,0 +1,36 @@
+Products:
+
+<table border="1">
+	<tr style="font-weight:bold;">
+		<td>
+			Product
+		</td>
+		<td>
+			Price
+		</td>
+		<td>
+			Available
+		</td>
+	</tr>
+	<% for p in @products %>
+	
+		<tr>
+			<td>
+				<%=link_to(p.name, url_for(:action => "edit", :id => p.id))%>
+
+			</td>
+			<td>
+				<%=p.price.as_price%>
+			</td>
+			<td>
+				<%=(p.available ? "Yes" : "No")%>
+			</td>
+			<td>
+				<%=link_to("[Delete]", :action => "delete", :id => p.id)%>
+			</td>
+		</tr>
+	<% end %>
+</table>
+
+<br>
+<%=link_to("Add new product", :action => "new")%>

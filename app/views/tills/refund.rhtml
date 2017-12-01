@@ -1,0 +1,33 @@
+<br><br>
+
+<div align="center" style="color:#ffffff;"><h2>Refund</h2></div>
+<br><br>
+<div align="center">
+	
+<i style="color:#ffffff;">Enter ticket number (including leading zeros)</i>
+<form name="formTicket" method="post" action="confirm_refund">
+
+
+<span style="color:#ffffff;font-size:24pt;">#</span><input style="font-size:24pt;text-align:center;" id="ticket_num" name="ticket[num]" type="text" maxlength="5" size="5" onkeyup="if (formTicket.ticket_num.value.length == 5) {formTicket.submit();}" onfocus="textFocus=true;">
+
+
+</form>
+</div>
+<div style="position:absolute;left:387px;top:270px;">
+<%
+	@text_field = "formTicket.ticket_num"
+	@length_event = {:length => 6, :function => "formTicket.submit();"}
+	@price_input = false
+%>
+<%=render :partial => "shared/pin_keypad"%>	
+	<%
+
+		@buttons = [{:id => 0, :caption => "Back", :on_loaded => "document.location.href='choose_mode'"}]
+		
+
+	%>
+</div>
+
+	<div align="center" style="position:absolute;left:0;top:650;width:1024;">
+		<%= render(:partial => "shared/large_button_list")%>
+	</div>

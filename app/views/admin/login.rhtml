@@ -1,0 +1,31 @@
+
+<form name="frmLogin" action="<%=url_for(:controller => :admin, :action => :login, :only_path => false)%>" method="post">
+
+<table>
+	<tr>
+		<td>
+			Username:
+		</td>
+		<td>
+			<%= text_field "user", "username"%>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Password:
+		</td>
+		<td>
+			<%= password_field "user", "password"%>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<%=submit_tag "Login"%>
+		</td>
+	</tr>
+</table>
+
+
+
+</form>

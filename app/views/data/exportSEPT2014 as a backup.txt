@@ -1,0 +1,344 @@
+Cashing up:
+<table border="1">
+	<tr>
+		<td rowspan="2">Day</td>
+		<td colspan="4" align="center">Till 1</td>
+		<td colspan="4" align="center">Till 2</td>
+		<td colspan="4" align="center">Till 3</td>		
+	</tr>
+	<tr>
+		<% 3.times do %>
+			<td>Cash</td>
+			<td>Card</td>
+			<td>Cheque</td>
+
+
+		<% end %>
+	</tr>
+<%
+	day = Time.now.beginning_of_day.advance(:days => 3).beginning_of_week.advance(:days => -3)
+	for i in 0..6
+%>
+	<tr>
+		<td><%=day.strftime("%a")%></td>
+		<%
+			cash_ups = CashUp.find(:all, :conditions => {:time => day..(day.advance(:days => 1))})
+			if cash_ups.size > 0 then
+		%>
+		<td><%=cash_ups[0].cash_amount%></td>
+		<td><%=cash_ups[0].card_amount%></td>
+		<td><%=cash_ups[0].cheque_amount%></td>
+		<%
+			end
+
+			if cash_ups.size > 1 then		
+		%>
+		<td><%=cash_ups[1].cash_amount%></td>
+		<td><%=cash_ups[1].card_amount%></td>
+		<td><%=cash_ups[1].cheque_amount%></td>
+		<%
+			end
+
+			if cash_ups.size > 2 then		
+		%>
+		<td><%=cash_ups[2].cash_amount%></td>
+		<td><%=cash_ups[2].card_amount%></td>
+		<td><%=cash_ups[2].cheque_amount%></td>
+		<%
+			end
+		%>
+
+	</tr>
+<% 
+day = day.advance(:days => 1)
+end 
+
+%>
+</table>
+<br><br>
+Ticket Prices
+<table border="1">
+	<tr>
+		<td>Ticket Type</td>
+		<td>Ticket Price</td>
+	</tr>
+	<% for tt in TicketType.find(:all) %>
+	
+		<tr>
+			<td><%=tt.name%></td>
+			<td><%=tt.price%></td>
+		</tr>
+	
+	<% end %>
+
+
+</table>
+<br><br>
+<%
+
+day = Time.now.beginning_of_day.advance(:days => 3).beginning_of_week.advance(:days => -3)
+showings = Showing.find(:all, :conditions => {:show_time => day..Time.now})
+film_ids = (showings.collect {|s| s.film.id}).uniq
+		
+day = Time.now.beginning_of_day.advance(:days => 3).beginning_of_week.advance(:days => -3)
+#orange_wednesday_count = 0
+7.times do
+
+%><br><br>
+<table>
+	<tr>
+		<td>Film Returns - </td><td><%=day.strftime("%d/%m/%Y")%></td>
+		
+	</tr>	
+</table>
+	<table border="1">
+		<tr>
+			<td rowspan="2">Title</td>
+			<% 1.times do %>
+				<td colspan="19">Showing 1</td>
+				<td colspan="19">Showing 2</td>
+				<td colspan="19">Showing 3</td>
+				<td colspan="19">Showing 4</td>
+				<td colspan="19">Showing 5</td>
+				<!--<td colspan="4">Tea Matinee</td>-->
+			<% end %>
+		</tr>
+		<tr>
+			
+			<% 1.times do %>
+				<% 5.times do%>
+					<td>Full</td>
+					<td>Conc</td>
+					<td>VIP Full</td>
+					<td>VIP Conc</td>
+					<td>TM Full</td>
+					<td>TM Conc</td>
+					<td>VIP TM Full</td>
+					<td>VIP TM Conc</td>
+					<td>Comp (Inc o/w)</td>
+
+					<td>Booking Full</td>
+					<td>Booking Conc</td>
+					<td>Booking Full VIP</td>
+					<td>Booking Conc VIP</td>
+					<td>Senior</td>
+					<td>Booking Senior</td>
+
+	                <td>LIVE FULL</td>
+                    <td>LIVE CONC</td>
+
+                    <td>E Full</td>
+                    <td>E CONC</td>
+
+					<td>Sp 1 FULL</td>
+					<td>Sp 1 CONC</td>
+
+					<td>new FULL</td>
+					<td>new CONC</td> 	
+					
+					<td>new E FULL</td>
+					<td>new E CONC</td>
+					
+					<td>Sp 2 FULL</td>
+					<td>Sp 2 CONC</td>
+					<% end %>
+					
+					
+				
+			<% end %>
+	
+		
+		<% j = 0 %>
+
+		<% for f in film_ids.collect {|fid| Film.find(fid)}%>
+	
+			<tr>
+				<td>
+					<%=f.title%>
+				</td>
+	
+				
+				<%
+	
+					showings = Showing.find(:all, :conditions => {:film_id => f.id, :show_time => day..(day.advance(:days => 1))})
+					showings.sort! {|a,b| a.show_time <=> b.show_time}
+					i = 0
+					showings.size.times do
+		
+						s = showings[i]
+						full_count = 0
+						conc_count = 0
+						
+						royal_full_count = 0
+						royal_conc_count = 0
+						
+						tm_full_count = 0
+						tm_conc_count = 0
+						
+						royal_tm_full_count = 0
+						royal_tm_conc_count = 0
+						
+						comp_count = 0
+						booking_full_count = 0
+						
+						booking_conc_count = 0
+						
+						booking_full_royal_count = 0
+						booking_conc_royal_count = 0
+						
+						senior_count = 0
+						booking_senior_count = 0
+						
+						live_full_count = 0
+						live_concession_count = 0
+						
+						encore_full_count = 0
+						encore_conc_count = 0
+						
+						special_a_full_count = 0
+						special_a_conc_count = 0
+						
+						new_full_count = 0
+						new_conc_count = 0
+						
+						new_encore_full_count = 0
+						new_encore_conc_count = 0
+						
+						special_b_full_count = 0 
+						special_b_conc_count = 0 
+						
+						
+						
+						s.tickets.each {|t| full_count += 1 if t.ticket_type_id == 1}
+						s.tickets.each {|t| conc_count += 1 if t.ticket_type_id == 2}
+						s.tickets.each {|t| royal_full_count += 1 if t.ticket_type_id == 3}
+						s.tickets.each {|t| royal_conc_count += 1 if t.ticket_type_id == 4}
+	
+						s.tickets.each {|t| tm_full_count += 1 if t.ticket_type_id == 6}
+						s.tickets.each {|t| tm_conc_count += 1 if t.ticket_type_id == 7}
+						s.tickets.each {|t| royal_tm_full_count += 1 if t.ticket_type_id == 8}
+						s.tickets.each {|t| royal_tm_conc_count += 1 if t.ticket_type_id == 9}
+	
+	
+						s.tickets.each {|t| comp_count += 1 if (t.ticket_type_id == 177 or t.ticket_type_id == 5)}
+					
+						s.tickets.each {|t| booking_full_count += 1 if t.ticket_type_id == 166}
+						s.tickets.each {|t| booking_conc_count += 1 if t.ticket_type_id == 171}
+	
+						s.tickets.each {|t| booking_full_royal_count += 1 if t.ticket_type_id == 168}
+						s.tickets.each {|t| booking_conc_royal_count += 1 if t.ticket_type_id == 169}
+						
+	
+						s.tickets.each {|t| senior_count += 1 if t.ticket_type_id == 167}
+						s.tickets.each {|t| booking_senior_count += 1 if t.ticket_type_id == 172}
+						
+						s.tickets.each {|t| live_full_count += 1 if t.ticket_type_id == 261}
+						s.tickets.each {|t| live_concession_count += 1 if t.ticket_type_id == 262}
+						
+						s.tickets.each {|t| encore_full_count += 1 if t.ticket_type_id == 263}
+						s.tickets.each {|t| encore_conc_count += 1 if t.ticket_type_id == 264}
+						
+						s.tickets.each {|t| new_full_count += 1 if t.ticket_type_id == 273}
+						s.tickets.each {|t| new_conc_count += 1 if t.ticket_type_id == 274}		
+
+						s.tickets.each {|t| new_encore_full_count += 1 if t.ticket_type_id == 271}
+						s.tickets.each {|t| new_encore_conc_count += 1 if t.ticket_type_id == 272}
+						
+						s.tickets.each {|t| special_a_full_count += 1 if t.ticket_type_id == 269}
+						s.tickets.each {|t| special_a_conc_count += 1 if t.ticket_type_id == 270}						
+						
+						s.tickets.each {|t| special_b_full_count += 1 if t.ticket_type_id == 275}
+						s.tickets.each {|t| special_b_conc_count += 1 if t.ticket_type_id == 276}
+						
+						%>
+						<td><%=full_count%></td>
+						<td><%=conc_count%></td>
+						<td><%=royal_full_count%></td>
+						<td><%=royal_conc_count%></td>
+						<td><%=tm_full_count%></td>
+						<td><%=tm_conc_count%></td>
+						<td><%=royal_tm_full_count%></td>
+						<td><%=royal_tm_conc_count%></td>
+						<td><%=comp_count%></td>
+						<td><%=booking_full_count%></td>
+						
+						<td><%=booking_conc_count%></td>
+						
+						<td><%=booking_full_royal_count%></td>
+						<td><%=booking_conc_royal_count%></td>
+						
+						<td><%=senior_count%></td>
+						<td><%=booking_senior_count%></td>
+						
+						<td><%=live_full_count%></td>
+						<td><%=live_concession_count%></td>
+						
+						<td><%=encore_full_count%></td>
+						<td><%=encore_conc_count%></td>
+						
+						<td><%=new_full_count%></td>
+						<td><%=new_conc_count%></td>
+						
+						<td><%=new_encore_full_count%></td>
+						<td><%=new_encore_conc_count%></td>
+						
+						<td><%=special_a_full_count%></td>
+						<td><%=special_a_conc_count%></td>
+						
+						<td><%=special_b_full_count%></td>
+						<td><%=special_b_conc_count%></td>
+						
+					<% 
+						i += 1
+					end %>
+					
+					<% (5-i).times do %>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					<% end %>
+					
+	
+					
+			</tr>
+		<% end %>
+		<% (12 - j).times do %>
+			<tr>
+					<% 5.times do %>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					<% end %>
+
+			</tr>
+		<% end %>
+	</table>
+<%
+day = day.advance(:days => 1)
+end
+
+%>

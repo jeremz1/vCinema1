@@ -1,0 +1,55 @@
+
+<table cellspacing="0" cellpadding="0">
+	
+	<tr>
+		<td align="center" style="color:#ffffff;">
+			<h2>Select Showing of "<%=@film.title%>"</h2>			
+		<td>
+	</tr>
+	<tr>
+		<td>
+			
+
+
+
+			<% 
+			
+			if @showings.size > 0 then
+			
+			
+				showing_string = proc do |s| 
+				        s.show_time.format("%a<br>%d %b<br><div style=\"overflow:hidden;height:3px;\"></div>%H:%M")
+				    end
+				
+				
+				showing = @showings.first
+				
+				@event = "this.style.backgroundPosition='-550px 0px';setTimeout('resetBackgroundPosition(\\'showing" + showing.id.to_s + "\\');',100);"
+				
+				%>
+				<div id="showing<%=showing.id%>" class="large_button" onclick="<%=@event%><%= remote_function(:url => { :action => :select_showing, :id => showing.id }) %>" onselectstart="return false;">
+					<table><tr><td>Next Showing (<%=showing.show_time.format("%a %d %b - %H:%M")%>)</td></tr></table>
+				</div>
+				
+				<div align="left" style="position:absolute;top:120px;left:0px;">
+					
+				<% @buttons = Array.new
+				 for i in 1..(@showings.length - 1) 
+					@buttons << {:id => @showings[i].id, :caption => showing_string[@showings[i]], :submit_url => "select_showing"}
+				 end
+
+				@max_buttons = 25
+				
+				%>
+				<%= render :partial => "shared/button_grid"%>
+			
+				</div>
+			<% else %>
+				
+				<I>No showings available.</I>
+			
+			<% end %>
+
+		</td>
+	</tr>
+</table>

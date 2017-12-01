@@ -1,0 +1,23 @@
+Web-only tables:
+    
+    email_log, membership, membership_products, mercury_winners, payment_response, basket_session
+
+Updates to existing tables:
+  films
+    - NEW: 3d_film, plot1, plot2, genre, cast, director, weburl, current, theatre
+    - Fix 3d_film, current, theatre
+  showings
+    - NEW: tea_matinee
+    - Fix tea_matinee
+  customers
+    - NEW: member, address1-4, postcode, firstname, lastname, title, dear, memberrenewal, membership_id, username, password, start_date, renewal_date
+    - Fix member
+  products
+    - NEW: case_quantity, bookable, member_only, online, web_name
+    - Fix bookable, member_only, online
+  seat_reservations
+    - NEW: reservationId, incGlasses
+    - Fix incGlasses
+  users
+    - NEW: current
+    - Fix current
